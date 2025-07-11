@@ -1085,21 +1085,17 @@ const configPage = `
           <span class="font-bold text-xl text-primary">事件通知系统</span>
         </div>
         <div class="flex items-center space-x-2 sm:space-x-4">
-          <a href="/admin" class="px-3 py-2 rounded-md 
- 
- text-sm
-             font-medium">
-             <i class="fas fa-list mr-1"></i>列表
+          <a href="/admin" class="px-3 py-2 rounded-md text-sm font-medium">
+             <i class="fas fa-list sm:mr-1"></i><span class="hidden sm:inline">列表</span>
           </a>
           <a href="/admin/config" class="active px-3 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-cog mr-1"></i>配置
+            <i class="fas fa-cog sm:mr-1"></i><span class="hidden sm:inline">配置</span>
           </a>
           <button id="darkModeToggle" class="px-3 py-2 rounded-md text-sm font-medium">
-  
            <i class="fas fa-moon"></i>
            </button>
           <a href="/api/logout" class="px-3 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-sign-out-alt mr-1"></i>退出
+            <i class="fas fa-sign-out-alt sm:mr-1"></i><span class="hidden sm:inline">退出</span>
           </a>
         </div>
       </div>
