@@ -1,4 +1,4 @@
-// 订阅续期通知网站 - 基于CloudFlare Workers (V3.0)
+// 事件通知系统 - 基于CloudFlare Workers (V3.0)
 
 // 定义HTML模板
 const loginPage = `
@@ -7,7 +7,7 @@ const loginPage = `
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>订阅管理系统</title>
+  <title>事件通知系统</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
@@ -41,7 +41,7 @@ const loginPage = `
 <body class="login-container flex items-center justify-center">
   <div class="login-box p-8 rounded-xl w-full max-w-md mx-4">
     <div class="text-center mb-8">
-      <h1 class="text-2xl font-bold text-gray-800"><i class="fas fa-calendar-check mr-2"></i>订阅管理系统</h1>
+      <h1 class="text-2xl font-bold text-gray-800"><i class="fas fa-calendar-check mr-2"></i>事件通知系统</h1>
     </div>
     
     <form id="loginForm" class="space-y-6">
@@ -59,6 +59,7 @@ const loginPage = `
         </label>
         <input type="password" id="password" name="password" required
           class="input-field 
+ 
  w-full px-4 py-3 rounded-lg text-gray-700 focus:outline-none">
       </div>
       
@@ -111,7 +112,7 @@ const adminPage = `
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>订阅管理系统</title>
+  <title>事件通知系统</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
@@ -137,7 +138,7 @@ const adminPage = `
         --nav-text: #E5E7EB;
         --hover-text: #FFFFFF;
         --active-link: #FFFFFF;
-        --row-hover-bg: #000000; 
+        --row-hover-bg: #000000;
     }
     body {
         background-color: var(--bg-color);
@@ -153,7 +154,7 @@ const adminPage = `
     }
     nav a:hover, #darkModeToggle:hover { color: var(--hover-text); }
     nav a.active { color: var(--active-link);
-        border-bottom-color: var(--active-link); }
+    border-bottom-color: var(--active-link); }
     .table-container, .modal-content, .config-section {
         background-color: var(--card-bg);
         border: 1px solid var(--border-color);
@@ -252,23 +253,20 @@ const adminPage = `
       <div class="flex justify-between h-16">
         <div class="flex items-center">
           <i class="fas fa-calendar-check text-indigo-600 text-2xl mr-2"></i>
-          <span class="font-bold text-xl text-primary">订阅管理</span>
+          <span class="font-bold text-lg text-primary">事件通知系统</span>
         </div>
         <div class="flex items-center space-x-2 sm:space-x-4">
-          <a href="/admin" class="active px-3 py-2 
- rounded-md
-             text-sm font-bold">
-             <i class="fas fa-list mr-1"></i>列表
+          <a href="/admin" class="active px-3 py-2 rounded-md text-sm font-bold">
+             <i class="fas fa-list sm:mr-1"></i><span class="hidden sm:inline">列表</span>
           </a>
           <a href="/admin/config" class="px-3 py-2 rounded-md text-sm font-bold">
-            <i class="fas fa-cog mr-1"></i>配置
+            <i class="fas fa-cog sm:mr-1"></i><span class="hidden sm:inline">配置</span>
           </a>
           <button id="darkModeToggle" class="px-3 py-2 rounded-md text-sm font-medium">
-   
-           <i class="fas fa-moon"></i>
+            <i class="fas fa-moon"></i>
           </button>
           <a href="/api/logout" class="px-3 py-2 rounded-md text-sm font-bold">
-            <i class="fas fa-sign-out-alt mr-1"></i>退出
+            <i class="fas fa-sign-out-alt sm:mr-1"></i><span class="hidden sm:inline">退出</span>
           </a>
         </div>
       </div>
@@ -276,18 +274,17 @@ const adminPage = `
   </nav>
   
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="flex justify-between
- 
- items-center mb-6">
-      <h2 class="text-2xl font-bold text-primary">订阅列表</h2>
-       <div class="flex space-x-2">
-        <button id="addSubscriptionBtn" class="bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 font-bold px-3 py-1 border border-gray-600 dark:border-gray-400 rounded-md text-sm flex items-center text-primary">
-          <i class="fas fa-plus mr-2"></i>添加订阅
-        </button>
-      </div>
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold text-primary">事件列表</h2>
+       <div class="flex items-center space-x-4">
+         <div id="datetime-display" class="text-right text-sm text-secondary"></div>
+         <button id="addSubscriptionBtn" class="bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 font-bold px-2 py-2 sm:px-3 sm:py-1 border border-gray-600 dark:border-gray-400 rounded-md text-sm flex items-center text-primary">
+           <i class="fas fa-plus sm:mr-2"></i><span class="hidden sm:inline">添加事件</span>
+         </button>
+       </div>
     </div>
     
-    <div class="table-container rounded-lg overflow-x-auto">
+     <div class="table-container rounded-lg overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
       
    <thead class="bg-gray-50">
@@ -295,9 +292,8 @@ const adminPage = `
             <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-primary uppercase tracking-wider">名称</th>
             <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-primary uppercase tracking-wider">类型</th>
             <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-primary uppercase tracking-wider">
-              起止时间 <i class="fas fa-sort-up ml-1 text-indigo-500" title="按到期时间升序排列"></i>
-    
-         </th>
+               起止时间 <i class="fas fa-sort-up ml-1 text-indigo-500" title="按到期时间升序排列"></i>
+            </th>
             <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-primary uppercase tracking-wider">状态</th>
             <th scope="col" class="px-6 py-3 text-right text-sm font-bold text-primary uppercase tracking-wider">操作</th>
           </tr>
@@ -318,10 +314,9 @@ const adminPage = `
     <div class="modal-content rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
       <div class="bg-gray-50 px-6 py-4 border-b rounded-t-lg">
         <div class="flex items-center justify-between">
-          <h3 id="modalTitle" class="text-lg font-medium text-primary">添加新订阅</h3>
-          <button id="closeModal" class="text-gray-400 hover:text-gray-600">
-            
- <i class="fas fa-times
+          <h3 id="modalTitle" class="text-lg font-medium text-primary">添加新事件</h3>
+           <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+             <i class="fas fa-times
           text-xl"></i>
           </button>
         </div>
@@ -330,90 +325,94 @@ const adminPage = `
       <form id="subscriptionForm" class="p-6 space-y-6">
         <input type="hidden" id="subscriptionId">
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-         
-    <label for="name" class="block text-sm font-medium mb-1">订阅名称 *</label>
+            <label for="name" class="block text-sm font-medium mb-1">事件名称 *</label>
              <input type="text" id="name" required
               class="w-full px-3 py-2 border rounded-md focus:outline-none">
             <div class="error-message text-red-500"></div>
           </div>
-          
-          <div>
-            
- <label for="customType" class="block
- text-sm font-medium mb-1">订阅类型</label>
-             <input type="text" id="customType" placeholder="例如：流媒体、云服务、软件等"
+           <div>
+             <label for="customType" class="block text-sm font-medium mb-1">事件类型</label>
+             <input type="text" id="customType" list="customTypeList" placeholder="选择或输入自定义类型"
               class="w-full px-3 py-2 border rounded-md focus:outline-none">
+             <datalist id="customTypeList">
+                <option value="订阅"></option>
+                <option value="航旅"></option>
+                <option value="日程"></option>
+                <option value="云服务器"></option>
+             </datalist>
             <div class="error-message text-red-500"></div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
              <label for="startDate" class="block text-sm font-medium mb-1">开始时间</label>
-            <input type="datetime-local" id="startDate"
+            <input type="date" id="startDate"
               class="w-full px-3 py-2 border rounded-md focus:outline-none">
             <div class="error-message text-red-500"></div>
           </div>
-          <div>
+           <div>
             <label for="expiryDate" class="block text-sm font-medium mb-1">到期时间 *</label>
-            <input type="datetime-local" id="expiryDate" required
+            <input type="date" id="expiryDate" required
            class="w-full px-3 py-2 border rounded-md focus:outline-none">
             <div class="error-message text-red-500"></div>
           </div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
           <div class="flex items-end space-x-2">
-            <div class="flex-1">
+            <div class="w-1/2">
               <label for="periodValue" class="block text-sm font-medium mb-1">周期 *</label>
               <input type="number" id="periodValue" list="periodValueList" min="1" value="1" required
                 class="w-full px-3 py-2 border rounded-md focus:outline-none">
-              <datalist id="periodValueList">
+               <datalist id="periodValueList">
                   <option value="1"></option><option value="2"></option><option value="3"></option><option value="4"></option><option value="5"></option><option value="6"></option><option value="7"></option><option value="8"></option><option value="9"></option><option value="10"></option><option value="11"></option><option value="12"></option><option value="13"></option><option value="14"></option><option value="15"></option><option value="16"></option><option value="17"></option><option value="18"></option><option value="19"></option><option value="20"></option>
               </datalist>
               <div class="error-message text-red-500"></div>
             </div>
-            <div class="flex-1">
+             <div class="w-1/2">
               <label for="periodUnit" class="block text-sm font-medium mb-1">单位 *</label>
               <select id="periodUnit" required
                 class="w-full px-3 py-2 border rounded-md focus:outline-none">
                  <option value="day">天</option>
                 <option value="week">周</option>
-                <option value="month" selected>月</option>
+                 <option value="month" selected>月</option>
                 <option value="year">年</option>
               </select>
                <div class="error-message text-red-500"></div>
             </div>
           </div>
-          <div class="flex items-center space-x-4">
-              <label class="inline-flex items-center">
+           <div class="flex items-center space-x-4">
+             <label class="inline-flex items-center pt-6">
                  <input type="checkbox" id="autoRenew" checked 
                    class="form-checkbox h-4 w-4 text-indigo-600 rounded">
                   <span class="ml-2 text-sm">自动续订</span>
               </label>
-              <button type="button" id="addNotifyTimeBtn" class="bg-transparent text-primary hover:bg-gray-100 dark:hover:bg-black text-sm px-3 py-2 rounded-md flex items-center border border-gray-400">
-                  增加通知时间
-              </button>
            </div>
          </div>
         
         <div class="border-t pt-6">
+            <div class="flex items-center space-x-4">
+                <button type="button" id="addNotifyTimeBtn" class="bg-transparent text-primary hover:bg-gray-100 dark:hover:bg-black text-sm px-3 py-2 rounded-md flex items-center border border-gray-400">
+                    增加通知时间
+                 </button>
+            </div>
             <p class="text-xs text-secondary mt-1">点击上方按钮可添加最多3个自定义通知时间点。</p>
             <div id="notifyTimesContainer" class="space-y-2 mt-2"></div>
         </div>
          
         <div>
           <label for="notes" class="block text-sm font-medium mb-1">备注</label>
-          <textarea id="notes" rows="3" placeholder="可添加相关备注信息..."
+           <textarea id="notes" rows="3" placeholder="可添加相关备注信息..."
             class="w-full px-3 py-2 border rounded-md focus:outline-none"></textarea>
           <div class="error-message text-red-500"></div>
         </div>
         
         <div class="flex justify-end space-x-3 pt-4 border-t">
-           <button type="button" id="testCurrentSubscriptionBtn" class="hidden text-sm text-white btn-info px-4 py-2 rounded-md flex items-center">
-               <i class="fas fa-paper-plane mr-2"></i>测试通知
+           <button type="button" id="testCurrentSubscriptionBtn" class="hidden text-sm text-primary border border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 rounded-md flex items-center">
+                <i class="fas fa-paper-plane mr-2"></i>测试通知
            </button>
            <button type="button" id="cancelBtn" 
             class="px-4 py-2 border rounded-md text-sm font-medium hover:bg-gray-50">
@@ -427,7 +426,8 @@ const adminPage = `
       </form>
     </div>
   </div>
-
+  
+  <script src="https://cdn.jsdelivr.net/npm/lunar-calendar@1.2.2/dist/lunar-calendar.min.js"></script>
   <script>
     const MAX_NOTIFY_TIMES = 3;
  function showToast(message, type = 'success', duration = 3000) {
@@ -473,7 +473,6 @@ const adminPage = `
 
     function clearFieldErrors() {
       document.querySelectorAll('.error-message').forEach(el => {
-       
   el.classList.remove('show');
         el.textContent = '';
       });
@@ -482,17 +481,16 @@ const adminPage = `
       });
     }
 
-    function formatToLocalDateTime(isoString) {
+    function formatToLocalDate(isoString) {
         if (!isoString) return '';
         try {
             const d = new Date(isoString);
-            const timezoneOffset = 
- d.getTimezoneOffset() * 60000;
+            const timezoneOffset = d.getTimezoneOffset() * 60000;
             const localDate = new Date(d.getTime() - timezoneOffset);
-            return localDate.toISOString().slice(0, 16);
- } catch(e) {
+            return localDate.toISOString().slice(0, 10); // 只返回 YYYY-MM-DD
+        } catch(e) {
             return '';
- }
+        }
     }
 
     function validateForm() {
@@ -500,7 +498,7 @@ const adminPage = `
  let isValid = true;
       const name = document.getElementById('name').value.trim();
       if (!name) {
-        showFieldError('name', '请输入订阅名称');
+        showFieldError('name', '请输入事件名称');
  isValid = false;
       }
 
@@ -528,7 +526,7 @@ const adminPage = `
  tbody.innerHTML = '';
         
         if (data.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-secondary">没有订阅数据</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-secondary">没有事件数据</td></tr>';
  return;
         }
         
@@ -546,9 +544,8 @@ const adminPage = `
           if (!subscription.isActive) {
             statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-gray-500"><i class="fas fa-pause-circle mr-1"></i>已停用</span>';
           } else if (expiryDate < now) {
-    
          statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-red-500"><i class="fas fa-exclamation-circle mr-1"></i>已过期</span>';
-          } else {
+           } else {
             statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-green-500"><i class="fas fa-check-circle mr-1"></i>正常</span>';
  }
           
@@ -585,30 +582,22 @@ const adminPage = `
           const notesHtml = subscription.notes ?
  '<div class="text-xs text-secondary" style="white-space: pre-wrap; word-break: break-all;">' + escapeHtml(subscription.notes) + '</div>' : '';
 
-          const expiryDateFormatted = formatToLocalDateTime(subscription.expiryDate).replace('T', ' ');
- const startDateFormatted = subscription.startDate ? formatToLocalDateTime(subscription.startDate).replace('T', ' ') : '';
+          const expiryDateFormatted = formatToLocalDate(subscription.expiryDate);
+ const startDateFormatted = subscription.startDate ? formatToLocalDate(subscription.startDate) : '';
  const expiryDateLine = '<div class="text-sm font-bold text-primary">到期: ' + expiryDateFormatted + '</div>';
           const startDateLine = startDateFormatted ?
  '<div class="text-xs font-bold text-primary mt-1">开始: ' + startDateFormatted + '</div>' : '';
- 
-          const actionsHtml = \`
-            <div class="relative inline-block dropdown-container">
-              <button type="button" class="dropdown-toggle-btn p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
-                <i class="fas fa-ellipsis-v h-4 w-4"></i>
-              </button>
-              <div class="dropdown-menu hidden origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-20">
-                <div class="py-1" role="menu">
-                  <button class="edit text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center w-full px-4 py-2 text-sm" role="menuitem" data-id="\${subscription.id}"><i class="fas fa-edit w-5 mr-2"></i>编辑</button>
-                  \${subscription.isActive
-                    ? \`<button class="toggle-status text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center w-full px-4 py-2 text-sm" role="menuitem" data-id="\${subscription.id}" data-action="deactivate"><i class="fas fa-pause-circle w-5 mr-2"></i>停用</button>\`
-                    : \`<button class="toggle-status text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center w-full px-4 py-2 text-sm" role="menuitem" data-id="\${subscription.id}" data-action="activate"><i class="fas fa-play-circle w-5 mr-2"></i>启用</button>\`
-                  }
-                  <button class="delete text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center w-full px-4 py-2 text-sm" role="menuitem" data-id="\${subscription.id}"><i class="fas fa-trash-alt w-5 mr-2"></i>删除</button>
-                </div>
-              </div>
-            </div>
+ const actionsHtml = \`
+            <div class="flex items-center justify-end space-x-2">
+                <button class="edit bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 text-primary px-2 py-1 rounded-md text-xs font-medium" data-id="\${subscription.id}">编辑</button>
+                \${subscription.isActive
+                    ?
+ \`<button class="toggle-status bg-transparent hover:bg-yellow-50 dark:hover:bg-gray-700 text-yellow-600 dark:text-yellow-400 px-2 py-1 rounded-md text-xs font-medium" data-id="\${subscription.id}" data-action="deactivate">停用</button>\`
+                    : \`<button class="toggle-status bg-transparent hover:bg-green-50 dark:hover:bg-gray-700 text-green-600 dark:text-green-400 px-2 py-1 rounded-md text-xs font-medium" data-id="\${subscription.id}" data-action="activate">启用</button>\`
+                }
+                <button class="delete bg-transparent hover:bg-red-50 dark:hover:bg-gray-700 text-red-600 dark:text-red-400 px-2 py-1 rounded-md text-xs font-medium" data-id="\${subscription.id}">删除</button>
+             </div>
           \`;
-          
  row.innerHTML = 
             '<td class="px-6 py-4">' + 
               '<div class="text-sm font-bold text-primary">' + safeName + '</div>' +
@@ -635,26 +624,25 @@ const adminPage = `
         document.querySelectorAll('.delete').forEach(button => button.addEventListener('click', deleteSubscription));
         document.querySelectorAll('.toggle-status').forEach(button => button.addEventListener('click', toggleSubscriptionStatus));
         document.getElementById('testCurrentSubscriptionBtn').addEventListener('click', testCurrentSubscriptionNotification);
-
  } catch (error) {
-        console.error('加载订阅失败:', error);
+        console.error('加载事件失败:', error);
         const tbody = document.getElementById('subscriptionsBody');
  tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-red-500"><i class="fas fa-exclamation-circle mr-2"></i>加载失败，请刷新页面重试</td></tr>';
-        showToast('加载订阅列表失败', 'error');
+        showToast('加载事件列表失败', 'error');
  }
     }
     
     async function testCurrentSubscriptionNotification(e) {
         const button = e.target.closest('button');
-        const id = document.getElementById('subscriptionId').value;
+ const id = document.getElementById('subscriptionId').value;
         if(!id) {
-            showToast('请先保存订阅才能进行测试', 'warning');
+            showToast('请先保存事件才能进行测试', 'warning');
             return;
-        }
+ }
 
         const originalContent = button.innerHTML;
         button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>';
-        button.disabled = true;
+ button.disabled = true;
  try {
             const response = await fetch('/api/subscriptions/' + id + '/test-notify', { method: 'POST' });
  const result = await response.json();
@@ -697,7 +685,7 @@ const adminPage = `
           button.disabled = false;
  }
       } catch (error) {
-        console.error((isActivate ? '启用' : '停用') + '订阅失败:', error);
+        console.error((isActivate ? '启用' : '停用') + '事件失败:', error);
  showToast((isActivate ? '启用' : '停用') + '失败，请稍后再试', 'error');
         button.innerHTML = originalContent;
         button.disabled = false;
@@ -705,7 +693,7 @@ const adminPage = `
     }
     
     document.getElementById('addSubscriptionBtn').addEventListener('click', () => {
-      document.getElementById('modalTitle').textContent = '添加新订阅';
+      document.getElementById('modalTitle').textContent = '添加新事件';
       document.getElementById('subscriptionModal').classList.remove('hidden');
       document.getElementById('subscriptionForm').reset();
       document.getElementById('subscriptionId').value = '';
@@ -715,15 +703,13 @@ const adminPage = `
       document.getElementById('testCurrentSubscriptionBtn').classList.add('hidden');
 
       const now = new Date();
-      document.getElementById('startDate').value = formatToLocalDateTime(now.toISOString());
+      document.getElementById('startDate').value = formatToLocalDate(now.toISOString());
       document.getElementById('autoRenew').checked = true;
-      
-   
+       
        calculateExpiryDate();
       setupModalEventListeners();
     });
-
-    function addNotifyTime(timeValue = '') {
+ function addNotifyTime(timeValue = '') {
         const container = document.getElementById('notifyTimesContainer');
  if (container.children.length >= MAX_NOTIFY_TIMES) {
             showToast('最多添加' + MAX_NOTIFY_TIMES + '个通知时间', 'warning');
@@ -731,12 +717,12 @@ const adminPage = `
         }
         
         let defaultValue = timeValue;
-        if (!defaultValue) {
+ if (!defaultValue) {
             const expiryDateValue = document.getElementById('expiryDate').value;
-            if (expiryDateValue) {
+ if (expiryDateValue) {
                 const expiry = new Date(expiryDateValue);
-                expiry.setHours(expiry.getHours() + 1);
-                defaultValue = formatToLocalDateTime(expiry.toISOString());
+ expiry.setHours(expiry.getHours() + 1);
+                defaultValue = formatToLocalDate(expiry.toISOString());
             }
         }
 
@@ -792,7 +778,7 @@ const adminPage = `
         expiry.setFullYear(start.getFullYear() + periodValue);
  }
       
-      document.getElementById('expiryDate').value = formatToLocalDateTime(expiry.toISOString());
+      document.getElementById('expiryDate').value = formatToLocalDate(expiry.toISOString());
  }
     
     document.getElementById('closeModal').addEventListener('click', () => {
@@ -815,7 +801,7 @@ const adminPage = `
           }
       });
       
- 
+       
        const subscription = {
         name: document.getElementById('name').value.trim(),
         customType: document.getElementById('customType').value.trim(),
@@ -827,7 +813,7 @@ const adminPage = `
  new Date(document.getElementById('expiryDate').value).toISOString() : null,
         periodValue: parseInt(document.getElementById('periodValue').value),
         periodUnit: document.getElementById('periodUnit').value,
-        
+      
  customNotifyTimes: customNotifyTimes,
       };
       const submitButton = e.target.querySelector('button[type="submit"]');
@@ -846,15 +832,15 @@ const adminPage = `
  const result = await response.json();
         
         if (result.success) {
-          showToast((id ? '更新' : '添加') + '订阅成功', 'success');
+          showToast((id ? '更新' : '添加') + '事件成功', 'success');
  document.getElementById('subscriptionModal').classList.add('hidden');
           loadSubscriptions();
         } else {
-          showToast((id ? '更新' : '添加') + '订阅失败: ' + (result.message || '未知错误'), 'error');
+          showToast((id ? '更新' : '添加') + '事件失败: ' + (result.message || '未知错误'), 'error');
  }
       } catch (error) {
-        console.error((id ? '更新' : '添加') + '订阅失败:', error);
- showToast((id ? '更新' : '添加') + '订阅失败，请稍后再试', 'error');
+        console.error((id ? '更新' : '添加') + '事件失败:', error);
+ showToast((id ? '更新' : '添加') + '事件失败，请稍后再试', 'error');
       } finally {
         submitButton.innerHTML = originalContent;
  submitButton.disabled = false;
@@ -868,15 +854,15 @@ const adminPage = `
  const subscription = await response.json();
         
         if (subscription) {
-          document.getElementById('modalTitle').textContent = '编辑订阅';
+          document.getElementById('modalTitle').textContent = '编辑事件';
  document.getElementById('subscriptionId').value = subscription.id;
           document.getElementById('name').value = subscription.name;
           document.getElementById('customType').value = subscription.customType || '';
           document.getElementById('notes').value = subscription.notes || '';
  document.getElementById('autoRenew').checked = subscription.autoRenew !== false;
           
-          document.getElementById('startDate').value = formatToLocalDateTime(subscription.startDate);
-          document.getElementById('expiryDate').value = formatToLocalDateTime(subscription.expiryDate);
+          document.getElementById('startDate').value = formatToLocalDate(subscription.startDate);
+          document.getElementById('expiryDate').value = formatToLocalDate(subscription.expiryDate);
 
           document.getElementById('periodValue').value = subscription.periodValue || 1;
           document.getElementById('periodUnit').value = subscription.periodUnit ||
@@ -886,7 +872,7 @@ const adminPage = `
           notifyTimesContainer.innerHTML = '';
           if (subscription.customNotifyTimes && Array.isArray(subscription.customNotifyTimes)) {
               subscription.customNotifyTimes.forEach(time => {
-                  addNotifyTime(formatToLocalDateTime(time));
+                  addNotifyTime(formatToLocalDate(time));
               });
  }
 
@@ -896,8 +882,8 @@ const adminPage = `
           setupModalEventListeners();
  }
       } catch (error) {
-        console.error('获取订阅信息失败:', error);
- showToast('获取订阅信息失败', 'error');
+        console.error('获取事件信息失败:', error);
+ showToast('获取事件信息失败', 'error');
       }
     }
     
@@ -905,7 +891,7 @@ const adminPage = `
       const button = e.target.closest('button');
  const id = button.dataset.id;
       
-      if (!confirm('确定要删除这个订阅吗？此操作不可恢复。')) return;
+      if (!confirm('确定要删除这个事件吗？此操作不可恢复。')) return;
       
       const originalContent = button.innerHTML;
       button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>删除中...';
@@ -923,7 +909,7 @@ const adminPage = `
           button.disabled = false;
  }
       } catch (error) {
-        console.error('删除订阅失败:', error);
+        console.error('删除事件失败:', error);
  showToast('删除失败，请稍后再试', 'error');
         button.innerHTML = originalContent;
         button.disabled = false;
@@ -952,35 +938,50 @@ const adminPage = `
         } else {
             localStorage.setItem('theme', 'light');
             toggleIcon.classList.remove('fa-sun');
-   
+           
            toggleIcon.classList.add('fa-moon');
         }
     });
- // Dropdown menu logic
-    window.addEventListener('click', function(e) {
-      document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
-        if (!menu.parentElement.contains(e.target)) {
-          menu.classList.add('hidden');
-        }
-      });
-    });
- document.getElementById('subscriptionsBody').addEventListener('click', function(e) {
-      const toggleButton = e.target.closest('.dropdown-toggle-btn');
-      if (toggleButton) {
-        e.stopPropagation();
-        const menu = toggleButton.nextElementSibling;
-        const isHidden = menu.classList.contains('hidden');
-        
-        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
-        
-        if (isHidden) {
-          menu.classList.remove('hidden');
-     
-     }
-      }
-    });
 
-    window.addEventListener('load', loadSubscriptions);
+    function updateBeijingTime() {
+        const display = document.getElementById('datetime-display');
+        if (!display) return;
+        
+        const now = new Date();
+        const beijingTimeOptions = {
+            timeZone: 'Asia/Shanghai',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const formatter = new Intl.DateTimeFormat('zh-CN', beijingTimeOptions);
+        const parts = formatter.formatToParts(now);
+        const
+            year = parts.find(p => p.type === 'year').value,
+            month = parts.find(p => p.type === 'month').value,
+            day = parts.find(p => p.type === 'day').value,
+            hour = parts.find(p => p.type === 'hour').value,
+            minute = parts.find(p => p.type === 'minute').value;
+        const beijingDateTime = \`\${year}年\${month}月\${day}日 \${hour}:\${minute}\`;
+        
+        try {
+            const lunarData = calendar.solar2lunar(now.getFullYear(), now.getMonth() + 1, now.getDate());
+            const lunarDate = \`农历: \${lunarData.lunarYear}年\${lunarData.monthStr}\${lunarData.dayStr}\`;
+            display.innerHTML = beijingDateTime + '<br>' + lunarDate;
+        } catch (e) {
+            display.innerHTML = beijingDateTime;
+            console.error("Lunar calendar conversion failed:", e);
+        }
+    }
+
+    window.addEventListener('load', () => {
+        loadSubscriptions();
+        updateBeijingTime();
+        setInterval(updateBeijingTime, 60000); // 每分钟更新一次
+    });
   </script>
 </body>
 </html>
@@ -995,7 +996,7 @@ const configPage = `
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>系统配置 - 订阅管理系统</title>
+  <title>系统配置 - 事件通知系统</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
@@ -1035,7 +1036,7 @@ const configPage = `
     }
     nav a:hover, #darkModeToggle:hover { color: var(--hover-text); }
     nav a.active { color: var(--active-link);
-        border-bottom-color: var(--active-link); }
+    border-bottom-color: var(--active-link); }
     
     input, select, textarea {
         background-color: var(--bg-color);
@@ -1081,10 +1082,11 @@ const configPage = `
       <div class="flex justify-between h-16">
         <div class="flex items-center">
           <i class="fas fa-calendar-check text-indigo-600 text-2xl mr-2"></i>
-          <span class="font-bold text-xl text-primary">订阅管理</span>
+          <span class="font-bold text-xl text-primary">事件通知系统</span>
         </div>
         <div class="flex items-center space-x-2 sm:space-x-4">
           <a href="/admin" class="px-3 py-2 rounded-md 
+ 
  text-sm
              font-medium">
              <i class="fas fa-list mr-1"></i>列表
@@ -1093,7 +1095,7 @@ const configPage = `
             <i class="fas fa-cog mr-1"></i>配置
           </a>
           <button id="darkModeToggle" class="px-3 py-2 rounded-md text-sm font-medium">
-   
+  
            <i class="fas fa-moon"></i>
            </button>
           <a href="/api/logout" class="px-3 py-2 rounded-md text-sm font-medium">
@@ -1115,7 +1117,7 @@ const configPage = `
           <button type="button" id="openAdminConfigBtn" class="btn-secondary text-white px-4 py-2 rounded-md text-sm font-medium flex items-center">
               <i class="fas fa-user-cog mr-2"></i>修改账户信息
           </button>
-     
+       
      </div>
         
         <div class="border-b pb-6">
@@ -1123,51 +1125,53 @@ const configPage = `
           <p class="text-sm text-secondary mb-4">勾选启用通知渠道，点击齿轮(⚙️)进行配置。所有配置将通过底部的“保存所有配置”按钮统一保存。</p>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
               
-            <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
+            <div class="flex flex-col items-center justify-center p-3 
+ border rounded-lg space-y-2">
    
               <span class="font-medium text-sm text-primary">WXPusher</span>
                 <div class="flex items-center space-x-3">
                     <input type="checkbox" id="enableWXPusher" name="enabled_notifiers" value="wxpusher" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
                     <button type="button" data-modal-target="wxpusherConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
-        
+         
          </div>
             </div>
 
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
                 <span class="font-medium text-sm text-primary">息知</span>
                 <div class="flex items-center space-x-3">
-                    <input type="checkbox" 
+                     <input type="checkbox" 
  id="enableXiZhi" name="enabled_notifiers" value="xizhi" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
                     <button type="button" data-modal-target="xizhiConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
                 </div>
             </div>
             
-            <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
+            <div class="flex flex-col items-center justify-center 
+ p-3 border rounded-lg space-y-2">
      
              <span class="font-medium text-sm text-primary">NotifyX</span>
                 <div class="flex items-center space-x-3">
                     <input type="checkbox" id="enableNotifyx" name="enabled_notifiers" value="notifyx" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <button type="button" data-modal-target="notifyxConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
+                    <button type="button" data-modal-target="notifyxConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas 
+ fa-cog"></i></button>
           
        </div>
             </div>
 
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
-                <span class="font-medium text-sm text-primary">企业微信</span>
+                <span class="font-medium text-sm text-primary">邮件</span>
                 <div class="flex items-center space-x-3">
-                    <input type="checkbox" id="enableWeCom" name="enabled_notifiers" 
- value="wecom" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <button type="button" data-modal-target="wecomConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
+                     <input type="checkbox" id="enableEmail" name="enabled_notifiers" value="email" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                    <button type="button" data-modal-target="emailConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
                 </div>
             </div>
 
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
-                <span class="font-medium text-sm 
+                 <span class="font-medium text-sm 
  text-primary">Telegram</span>
                 <div class="flex items-center space-x-3">
                     <input type="checkbox" id="enableTelegram" name="enabled_notifiers" value="telegram" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
                     <button type="button" data-modal-target="telegramConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
-                </div>
+                 </div>
         
      </div>
 
@@ -1178,7 +1182,7 @@ const configPage = `
           <button type="submit" class="btn-primary text-white px-6 py-2 rounded-md text-sm font-medium">
             <i class="fas fa-save mr-2"></i>保存所有配置
           </button>
-        </div>
+         </div>
       </form>
   
    </div>
@@ -1189,25 +1193,26 @@ const configPage = `
         <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
             <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
                 <h3 class="text-lg font-medium text-primary">管理员账户设置</h3>
-                <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                 <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
        
       </div>
             <div class="p-6 space-y-4">
                 <div>
                     <label for="adminUsername" class="block text-sm font-medium text-primary">用户名</label>
-                    <input type="text" id="adminUsername" class="mt-1 block w-full
+                    <input type="text" id="adminUsername" class="mt-1 block 
+ w-full
                
         rounded-md shadow-sm py-2 px-3 focus:outline-none">
                 </div>
                 <div>
                     <label for="adminPassword" class="block text-sm font-medium text-primary">新密码</label>
-                    <input type="password" id="adminPassword" placeholder="如不修改密码，请留空" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+                     <input type="password" id="adminPassword" placeholder="如不修改密码，请留空" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
  
                      <p class="mt-1 text-sm text-secondary">留空表示不修改当前密码</p>
                 </div>
             </div>
             <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
-                <button type="button" data-close-button class="btn-secondary text-white px-4 py-2 rounded-md text-sm">完成</button>
+                 <button type="button" data-close-button class="btn-secondary text-white px-4 py-2 rounded-md text-sm">完成</button>
       
        </div>
         </div>
@@ -1217,14 +1222,15 @@ const configPage = `
       <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
         <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
           <h3 class="text-lg font-medium text-primary">WXPusher 配置</h3>
-          <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+           <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
        
   </div>
         <div class="p-6 space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="wxpusherAppToken" class="block text-sm font-medium text-primary">AppToken</label>
-              <input type="text" id="wxpusherAppToken" placeholder="在 WXPusher 后台获取" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+              <input type="text" id="wxpusherAppToken" placeholder="在 WXPusher 后台获取" class="mt-1 block w-full rounded-md 
+ shadow-sm py-2 px-3 focus:outline-none">
             </div>
      
          <div>
@@ -1232,14 +1238,15 @@ const configPage = `
               <input type="text" id="wxpusherTopicId" placeholder="推送给主题, 可选" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
             </div>
           </div>
-          <div>
+           <div>
             <label for="wxpusherUid" class="block 
  text-sm font-medium text-primary">UIDs</label>
             <input type="text" id="wxpusherUid" placeholder="推送给多个用户, 用英文逗号隔开" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
           </div>
           <p class="text-sm text-secondary">UID 和 Topic ID 至少需要填写一个。从 <a href="http://wxpusher.zjiecode.com/" target="_blank" class="text-indigo-600 hover:text-indigo-800">WXPusher官网</a> 获取。</p>
         </div>
-        <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
+        <div class="flex justify-end 
+ space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
           <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
           <button type="button" data-test-button="wxpusher" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
         </div>
@@ -1248,26 +1255,26 @@ const configPage = `
     
     <div id="xizhiConfigModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 modal-container hidden flex items-center justify-center">
         <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
-            <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
+             <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
             
      <h3 class="text-lg font-medium text-primary">息知 配置</h3>
                 <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
             </div>
             <div class="p-6 space-y-4">
                 <div>
-                    <label for="xizhiPushUrl" class="block text-sm font-medium text-primary">息知推送URL (接口)</label>
+                     <label for="xizhiPushUrl" class="block text-sm font-medium text-primary">息知推送URL (接口)</label>
     
                  <input type="text" id="xizhiPushUrl" placeholder="例如: https://xizhi.qqoq.net/xxxxxxxx.send" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
                     <p class="mt-1 text-sm text-secondary">从 <a href="https://xz.qqoq.net/" target="_blank" class="text-indigo-600 hover:text-indigo-800">息知官网</a> 获取完整的推送URL</p>
                 </div>
-            </div>
+             </div>
             <div class="flex justify-end 
  space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
                 <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
                 <button type="button" data-test-button="xizhi" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
             </div>
         </div>
-    </div>
+     </div>
 
     <div id="notifyxConfigModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 modal-container hidden flex items-center justify-center">
         
@@ -1275,70 +1282,87 @@ const configPage = `
             <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
                 <h3 class="text-lg font-medium text-primary">NotifyX 配置</h3>
                 <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-            </div>
+             </div>
             <div class="p-6 space-y-4">
          
          <div>
                     <label for="notifyxApiKey" class="block text-sm font-medium text-primary">API Key</label>
                     <input type="text" id="notifyxApiKey" placeholder="从 NotifyX 平台获取的 API Key" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
-                    <p class="mt-1 text-sm text-secondary">从 <a href="https://www.notifyx.cn/" target="_blank" class="text-indigo-600 hover:text-indigo-800">NotifyX官网</a> 获取</p>
+                     <p class="mt-1 text-sm text-secondary">从 <a href="https://www.notifyx.cn/" target="_blank" class="text-indigo-600 hover:text-indigo-800">NotifyX官网</a> 获取</p>
    
               </div>
             </div>
             <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
                 <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
-                <button type="button" data-test-button="notifyx" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
+                 <button type="button" data-test-button="notifyx" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
       
        </div>
         </div>
     </div>
 
-    <div id="wecomConfigModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 modal-container hidden flex items-center justify-center">
-        <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
-            <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
-                <h3 class="text-lg font-medium text-primary">企业微信机器人 配置</h3>
-               
-  <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-            </div>
-            <div class="p-6 space-y-4">
-                <div>
-                    <label for="wecomWebhookUrl" class="block text-sm font-medium text-primary">Webhook URL</label>
-                    <input type="text" id="wecomWebhookUrl" placeholder="企业微信群机器ンの Webhook 地址" class="mt-1 
- block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
-                </div>
-            </div>
-            <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
-                <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
-                <button type="button" data-test-button="wecom" class="btn-secondary text-white 
- px-4 py-2 rounded-md text-sm">测试</button>
-            </div>
+    <div id="emailConfigModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 modal-container hidden flex items-center justify-center">
+      <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
+        <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
+          <h3 class="text-lg font-medium 
+ text-primary">邮件 (Resend) 配置</h3>
+          <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
         </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <label for="resendApiKey" class="block text-sm font-medium text-primary">Resend API Key</label>
+            <input type="password" id="resendApiKey" placeholder="re_xxxxxxxxxxxxxx" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+            <p class="mt-1 
+ text-sm text-secondary">从 <a href="https://resend.com/login" target="_blank" class="text-indigo-600 hover:text-indigo-800">Resend控制台</a> 获取的 API Key</p>
+          </div>
+          <div>
+            <label for="senderEmail" class="block text-sm font-medium text-primary">发件人邮箱</label>
+            <input type="email" id="senderEmail" placeholder="noreply@yourdomain.com" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+          </div>
+          <div>
+             <label for="senderName" class="block text-sm font-medium text-primary">发件人名称</label>
+            <input type="text" id="senderName" placeholder="事件通知系统" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+          </div>
+          <div>
+            <label for="recipientEmail" class="block text-sm font-medium text-primary">收件人邮箱</label>
+            <input type="email" id="recipientEmail" placeholder="your-email@example.com" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+          </div>
+ 
+        </div>
+        <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
+          <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
+          <button type="button" data-test-button="email" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
+        </div>
+      </div>
     </div>
 
     <div id="telegramConfigModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 modal-container hidden flex items-center justify-center">
-        <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
+        <div 
+ class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
             <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
                 <h3 class="text-lg font-medium text-primary">Telegram Bot 配置</h3>
      
              <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
             </div>
             <div class="p-6 space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                    
       <label for="tgBotToken" class="block text-sm font-medium text-primary">Bot Token</label>
-                        <input type="text" id="tgBotToken" placeholder="从 BotFather 获取" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+                        <input type="text" id="tgBotToken" placeholder="从 BotFather 获取" class="mt-1 block w-full rounded-md shadow-sm py-2 
+ px-3 focus:outline-none">
                     </div>
                     <div>
             
              <label for="tgChatId" class="block text-sm font-medium text-primary">Chat ID</label>
-                        <input type="text" id="tgChatId" placeholder="用户、频道或群组的ID" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+                        <input type="text" id="tgChatId" placeholder="用户、频道或群组的ID" 
+ class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
                     </div>
                 </div>
            
    </div>
             <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
-                <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
+                <button type="button" data-save-button class="btn-primary text-white px-4 py-2 
+ rounded-md text-sm">保存</button>
                 <button type="button" data-test-button="telegram" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
             </div>
         </div>
@@ -1384,7 +1408,10 @@ const configPage = `
         document.getElementById('wxpusherTopicId').value = config.WXPUSHER_TOPIC_ID || '';
         document.getElementById('xizhiPushUrl').value = config.XIZHI_PUSH_URL || '';
         document.getElementById('notifyxApiKey').value = config.NOTIFYX_API_KEY || '';
-        document.getElementById('wecomWebhookUrl').value = config.WECOM_WEBHOOK_URL || '';
+        document.getElementById('resendApiKey').value = config.RESEND_API_KEY || '';
+        document.getElementById('senderEmail').value = config.SENDER_EMAIL || '';
+        document.getElementById('senderName').value = config.SENDER_NAME || '事件通知系统';
+        document.getElementById('recipientEmail').value = config.RECIPIENT_EMAIL || '';
         document.getElementById('tgBotToken').value = config.TG_BOT_TOKEN || '';
         document.getElementById('tgChatId').value = config.TG_CHAT_ID || '';
  if (config.ENABLED_NOTIFIERS && Array.isArray(config.ENABLED_NOTIFIERS)) {
@@ -1392,13 +1419,13 @@ const configPage = `
                 let checkbox;
                 if (notifier === 'notifyx') checkbox = document.getElementById('enableNotifyx');
                 else if (notifier === 'wxpusher') checkbox = document.getElementById('enableWXPusher');
-                else if (notifier === 
+                 else if (notifier === 
  'telegram') checkbox = document.getElementById('enableTelegram');
-                else if (notifier === 'wecom') checkbox = document.getElementById('enableWeCom');
+                else if (notifier === 'email') checkbox = document.getElementById('enableEmail');
                 else if (notifier === 'xizhi') checkbox = document.getElementById('enableXiZhi');
                 
                 if (checkbox) {
-                 
+           
     checkbox.checked = true;
                 }
             });
@@ -1424,8 +1451,11 @@ const configPage = `
         WXPUSHER_TOPIC_ID: document.getElementById('wxpusherTopicId').value.trim(),
         TG_BOT_TOKEN: document.getElementById('tgBotToken').value.trim(),
         TG_CHAT_ID: document.getElementById('tgChatId').value.trim(),
-        WECOM_WEBHOOK_URL: document.getElementById('wecomWebhookUrl').value.trim(),
+        RESEND_API_KEY: document.getElementById('resendApiKey').value.trim(),
         
+ SENDER_EMAIL: document.getElementById('senderEmail').value.trim(),
+        SENDER_NAME: document.getElementById('senderName').value.trim(),
+        RECIPIENT_EMAIL: document.getElementById('recipientEmail').value.trim(),
         XIZHI_PUSH_URL: document.getElementById('xizhiPushUrl').value.trim(),
         ENABLED_NOTIFIERS: enabledNotifiers
       };
@@ -1470,14 +1500,14 @@ const configPage = `
 
       if (success) {
         setTimeout(() => {
-          window.location.href = '/admin';
+  
+         window.location.href = '/admin';
         }, 1000); 
       } else {
         submitButton.innerHTML = originalContent;
         submitButton.disabled = false;
       }
     });
-
  async function testNotification(button, type) {
       const originalContent = button.innerHTML;
       button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
@@ -1536,26 +1566,27 @@ const configPage = `
  document.querySelectorAll('[data-test-button]').forEach(button => {
         button.addEventListener('click', (e) => testNotification(e.currentTarget, e.currentTarget.dataset.testButton));
     });
-    
-    document.querySelectorAll('[data-save-button]').forEach(button => {
+ document.querySelectorAll('[data-save-button]').forEach(button => {
         button.addEventListener('click', async (e) => {
             const modal = e.target.closest('.modal-container');
             const originalContent = button.innerHTML;
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             button.disabled = true;
             const success = await saveConfig();
-            if (success) {
+         
+    if (success) {
                 setTimeout(() => {
                     if(modal) modal.classList.add('hidden');
                 }, 1000);
             }
             button.innerHTML = originalContent;
-            button.disabled = false;
+            button.disabled 
+ = false;
         });
     });
 
  const darkModeToggle = document.getElementById('darkModeToggle');
-    const toggleIcon = darkModeToggle.querySelector('i');
+ const toggleIcon = darkModeToggle.querySelector('i');
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
  toggleIcon.classList.remove('fa-moon');
@@ -1592,7 +1623,7 @@ const configPage = `
 const admin = {
   async handleRequest(request, env, ctx) {
     const url = new URL(request.url);
- const pathname = url.pathname;
+    const pathname = url.pathname;
     
     const token = getCookieValue(request.headers.get('Cookie'), 'token');
     const config = await getConfig(env);
@@ -1604,32 +1635,32 @@ const admin = {
         status: 302,
         headers: { 'Location': '/' }
       });
- }
+    }
     
     if (pathname === '/admin/config') {
       return new Response(configPage, {
         headers: { 'Content-Type': 'text/html; charset=utf-8' }
       });
- }
+    }
     
     return new Response(adminPage, {
       headers: { 'Content-Type': 'text/html; charset=utf-8' }
     });
- }
+  }
 };
 
 const api = {
   async handleRequest(request, env, ctx) {
     const url = new URL(request.url);
- const path = url.pathname.slice(4);
+    const path = url.pathname.slice(4);
     const method = request.method;
     
     const config = await getConfig(env);
- if (path === '/login' && method === 'POST') {
+    if (path === '/login' && method === 'POST') {
       const body = await request.json();
- if (body.username === config.ADMIN_USERNAME && body.password === config.ADMIN_PASSWORD) {
+      if (body.username === config.ADMIN_USERNAME && body.password === config.ADMIN_PASSWORD) {
         const token = await generateJWT(body.username, config.JWT_SECRET);
- return new Response(
+        return new Response(
           JSON.stringify({ success: true }),
           {
             headers: {
@@ -1644,7 +1675,7 @@ const api = {
           JSON.stringify({ success: false, message: '用户名或密码错误' }),
           { headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
     }
     
     if (path === '/logout' && (method === 'GET' || method === 'POST')) {
@@ -1655,7 +1686,7 @@ const api = {
           'Set-Cookie': 'token=; HttpOnly; Path=/; SameSite=Strict; Max-Age=0'
         }
       });
- }
+    }
     
     const token = getCookieValue(request.headers.get('Cookie'), 'token');
     const user = token ?
@@ -1666,21 +1697,21 @@ const api = {
         JSON.stringify({ success: false, message: '未授权访问' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       );
- }
+    }
     
     if (path === '/config') {
       if (method === 'GET') {
         const { JWT_SECRET, ADMIN_PASSWORD, ...safeConfig } = config;
- return new Response(
+        return new Response(
           JSON.stringify(safeConfig),
           { headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
       
       if (method === 'POST') {
         try {
           const newConfig = await request.json();
- const currentConfig = await getConfig(env);
+          const currentConfig = await getConfig(env);
 
           const updatedConfig = { 
             ...currentConfig,
@@ -1692,47 +1723,51 @@ const api = {
             TG_BOT_TOKEN: newConfig.TG_BOT_TOKEN,
  
              TG_CHAT_ID: newConfig.TG_CHAT_ID,
-            WECOM_WEBHOOK_URL: newConfig.WECOM_WEBHOOK_URL,
+            RESEND_API_KEY: newConfig.RESEND_API_KEY,
+            SENDER_EMAIL: newConfig.SENDER_EMAIL,
+            SENDER_NAME: newConfig.SENDER_NAME,
+            RECIPIENT_EMAIL: newConfig.RECIPIENT_EMAIL,
             XIZHI_PUSH_URL: newConfig.XIZHI_PUSH_URL,
             ENABLED_NOTIFIERS: newConfig.ENABLED_NOTIFIERS
+          
            };
  if (newConfig.ADMIN_PASSWORD) {
             updatedConfig.ADMIN_PASSWORD = newConfig.ADMIN_PASSWORD;
  }
           
           await env.SUBSCRIPTIONS_KV.put('config', JSON.stringify(updatedConfig));
- return new Response(
+          return new Response(
             JSON.stringify({ success: true }),
             { headers: { 'Content-Type': 'application/json' } }
           );
- } catch (error) {
+        } catch (error) {
           console.error('保存配置失败:', error);
- return new Response(
+          return new Response(
             JSON.stringify({ success: false, message: '更新配置失败: ' + error.message }),
             { status: 400, headers: { 'Content-Type': 'application/json' } }
           );
- }
+        }
       }
     }
     
     if (path === '/test-notification' && method === 'POST') {
       try {
         const body = await request.json();
- let success = false;
+        let success = false;
         
         const title = '测试通知';
-        const content = '这是一条来自订阅管理系统的测试通知。\n\n发送时间: ' + new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
- if (body.type === 'notifyx') {
+        const content = '这是一条来自事件通知系统的测试通知。\n\n发送时间: ' + new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+        if (body.type === 'notifyx') {
             success = await sendNotifyXNotification(title, '## ' + title + '\n\n' + content, '测试通知', config);
- } else if (body.type === 'wxpusher') {
+        } else if (body.type === 'wxpusher') {
             success = await sendWXPusherNotification(title, content, config);
- } else if (body.type === 'telegram') {
+        } else if (body.type === 'telegram') {
             success = await sendTelegramNotification(title, `**${title}**\n\n${content}`, config);
- } else if (body.type === 'wecom') {
-            success = await sendWeComNotification(title, `> **${title}**\n\n${content}`, config);
- } else if (body.type === 'xizhi') {
+        } else if (body.type === 'email') {
+            success = await sendResendEmailNotification(title, content, config);
+        } else if (body.type === 'xizhi') {
             success = await sendXiZhiNotification(title, content, config);
- }
+        }
 
         const message = success ?
  (body.type.toUpperCase() + ' 通知测试成功') : (body.type.toUpperCase() + ' 通知发送失败，请检查配置');
@@ -1741,89 +1776,89 @@ const api = {
           JSON.stringify({ success, message }),
           { headers: { 'Content-Type': 'application/json' } }
         );
- } catch (error) {
+      } catch (error) {
         console.error('测试通知失败:', error);
- return new Response(
+        return new Response(
           JSON.stringify({ success: false, message: '测试通知失败: ' + error.message }),
           { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
     }
     
     if (path === '/subscriptions') {
       if (method === 'GET') {
         const subscriptions = await getAllSubscriptions(env);
- return new Response(
+        return new Response(
           JSON.stringify(subscriptions),
           { headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
       
       if (method === 'POST') {
         const subscription = await request.json();
- const result = await createSubscription(subscription, env);
+        const result = await createSubscription(subscription, env);
         return new Response(
           JSON.stringify(result),
           { status: result.success ? 201 : 400, headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
     }
     
     if (path.startsWith('/subscriptions/')) {
       const parts = path.split('/');
- const id = parts[2];
+      const id = parts[2];
       
       if (parts[3] === 'toggle-status' && method === 'POST') {
         const body = await request.json();
- const result = await toggleSubscriptionStatus(id, body.isActive, env);
+        const result = await toggleSubscriptionStatus(id, body.isActive, env);
         return new Response(
           JSON.stringify(result),
           { status: result.success ? 200 : 400, headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
 
       if (parts[3] === 'test-notify' && method === 'POST') {
         const result = await testSingleSubscriptionNotification(id, env);
- return new Response(JSON.stringify(result), { status: result.success ? 200 : 500, headers: { 'Content-Type': 'application/json' } });
- }
+        return new Response(JSON.stringify(result), { status: result.success ? 200 : 500, headers: { 'Content-Type': 'application/json' } });
+      }
       
       if (method === 'GET') {
         const subscription = await getSubscription(id, env);
- return new Response(
+        return new Response(
           JSON.stringify(subscription),
           { headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
       
       if (method === 'PUT') {
         const subscription = await request.json();
- const result = await updateSubscription(id, subscription, env);
+        const result = await updateSubscription(id, subscription, env);
         return new Response(
           JSON.stringify(result),
           { status: result.success ? 200 : 400, headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
       
       if (method === 'DELETE') {
         const result = await deleteSubscription(id, env);
- return new Response(
+        return new Response(
           JSON.stringify(result),
           { status: result.success ? 200 : 400, headers: { 'Content-Type': 'application/json' } }
         );
- }
+      }
     }
     
     return new Response(
       JSON.stringify({ success: false, message: '未找到请求的资源' }),
       { status: 404, headers: { 'Content-Type': 'application/json' } }
     );
- }
+  }
 };
 
 async function getConfig(env) {
   try {
     const data = await env.SUBSCRIPTIONS_KV.get('config');
- const config = data ? JSON.parse(data) : {};
+    const config = data ? JSON.parse(data) : {};
     
     return {
       ADMIN_USERNAME: config.ADMIN_USERNAME ||
@@ -1840,14 +1875,19 @@ async function getConfig(env) {
       TG_BOT_TOKEN: config.TG_BOT_TOKEN || '',
       TG_CHAT_ID: config.TG_CHAT_ID ||
  '',
-      WECOM_WEBHOOK_URL: config.WECOM_WEBHOOK_URL || '',
-      XIZHI_PUSH_URL: config.XIZHI_PUSH_URL ||
+      RESEND_API_KEY: config.RESEND_API_KEY || '',
+      SENDER_EMAIL: config.SENDER_EMAIL ||
  '',
-      ENABLED_NOTIFIERS: config.ENABLED_NOTIFIERS || []
+      SENDER_NAME: config.SENDER_NAME || '事件通知系统',
+      RECIPIENT_EMAIL: config.RECIPIENT_EMAIL ||
+ '',
+      XIZHI_PUSH_URL: config.XIZHI_PUSH_URL || '',
+      ENABLED_NOTIFIERS: config.ENABLED_NOTIFIERS ||
+ []
     };
  } catch (error) {
     console.error("Failed to get or parse config from KV:", error);
- return {
+    return {
       ADMIN_USERNAME: 'admin',
       ADMIN_PASSWORD: 'password',
       JWT_SECRET: 'your-secret-key-change-me',
@@ -1857,8 +1897,12 @@ async function getConfig(env) {
       WXPUSHER_TOPIC_ID: '',
       TG_BOT_TOKEN: '',
       TG_CHAT_ID: '',
-      WECOM_WEBHOOK_URL: '',
+      RESEND_API_KEY: '',
+      SENDER_EMAIL: '',
+      SENDER_NAME: '事件通知系统',
+      RECIPIENT_EMAIL: '',
       XIZHI_PUSH_URL: '',
+ 
       ENABLED_NOTIFIERS: []
     };
  }
@@ -1866,11 +1910,11 @@ async function getConfig(env) {
 
 async function generateJWT(username, secret) {
   const header = { alg: 'HS256', typ: 'JWT' };
- const payload = { username, iat: Math.floor(Date.now() / 1000) };
+  const payload = { username, iat: Math.floor(Date.now() / 1000) };
   
   const headerBase64 = btoa(JSON.stringify(header));
   const payloadBase64 = btoa(JSON.stringify(payload));
- const signatureInput = headerBase64 + '.' + payloadBase64;
+  const signatureInput = headerBase64 + '.' + payloadBase64;
   const signature = await CryptoJS.HmacSHA256(signatureInput, secret);
   
   return headerBase64 + '.'
@@ -1880,16 +1924,16 @@ async function generateJWT(username, secret) {
 async function verifyJWT(token, secret) {
   try {
     const parts = token.split('.');
- if (parts.length !== 3) return null;
+    if (parts.length !== 3) return null;
     
     const [headerBase64, payloadBase64, signature] = parts;
     const signatureInput = headerBase64 + '.' + payloadBase64;
- const expectedSignature = await CryptoJS.HmacSHA256(signatureInput, secret);
+    const expectedSignature = await CryptoJS.HmacSHA256(signatureInput, secret);
     
     if (signature !== expectedSignature) return null;
     
     return JSON.parse(atob(payloadBase64));
- } catch (error) {
+  } catch (error) {
     return null;
   }
 }
@@ -1897,24 +1941,24 @@ async function verifyJWT(token, secret) {
 async function getAllSubscriptions(env) {
   try {
     const data = await env.SUBSCRIPTIONS_KV.get('subscriptions');
- return data ? JSON.parse(data) : [];
+    return data ? JSON.parse(data) : [];
   } catch (error) {
     console.error("Failed to get or parse subscriptions from KV:", error);
- return [];
+    return [];
   }
 }
 
 async function getSubscription(id, env) {
   const subscriptions = await getAllSubscriptions(env);
   return subscriptions.find(s => s.id === id);
- }
+}
 
 async function createSubscription(subscription, env) {
   try {
     let subscriptions = await getAllSubscriptions(env);
- if (!subscription.name || !subscription.expiryDate) {
+    if (!subscription.name || !subscription.expiryDate) {
       return { success: false, message: '缺少必填字段' };
- }
+    }
     
     const newSubscription = {
       id: Date.now().toString(),
@@ -1935,27 +1979,27 @@ async function createSubscription(subscription, env) {
       sentCustomNotifications: [],
       createdAt: new Date().toISOString()
     };
- subscriptions.push(newSubscription);
+    subscriptions.push(newSubscription);
     
     await env.SUBSCRIPTIONS_KV.put('subscriptions', JSON.stringify(subscriptions));
     
     return { success: true, subscription: newSubscription };
   } catch (error) {
-    console.error("创建订阅失败:", error);
- return { success: false, message: '创建订阅失败: ' + error.message };
- }
+    console.error("创建事件失败:", error);
+    return { success: false, message: '创建事件失败: ' + error.message };
+  }
 }
 
 async function updateSubscription(id, subscription, env) {
   try {
     let subscriptions = await getAllSubscriptions(env);
- const index = subscriptions.findIndex(s => s.id === id);
+    const index = subscriptions.findIndex(s => s.id === id);
     
-    if (index === -1) return { success: false, message: '订阅不存在' };
- if (!subscription.name || !subscription.expiryDate) return { success: false, message: '缺少必填字段' };
+    if (index === -1) return { success: false, message: '事件不存在' };
+    if (!subscription.name || !subscription.expiryDate) return { success: false, message: '缺少必填字段' };
     
     const existingSub = subscriptions[index];
- const updatedSub = {
+    const updatedSub = {
       ...existingSub,
       ...subscription,
       autoRenew: subscription.autoRenew !== false,
@@ -1963,119 +2007,119 @@ async function updateSubscription(id, subscription, env) {
  [],
       updatedAt: new Date().toISOString()
     };
- if (new Date(updatedSub.expiryDate) > new Date()) {
+    if (new Date(updatedSub.expiryDate) > new Date()) {
         delete updatedSub.expiredNotificationSent;
         delete updatedSub.sentCustomNotifications;
- // 重置自定义通知发送记录
+    // 重置自定义通知发送记录
     }
     
     subscriptions[index] = updatedSub;
 
     await env.SUBSCRIPTIONS_KV.put('subscriptions', JSON.stringify(subscriptions));
- return { success: true, subscription: subscriptions[index] };
+    return { success: true, subscription: subscriptions[index] };
   } catch (error) {
-    console.error("更新订阅失败:", error);
- return { success: false, message: '更新订阅失败: ' + error.message };
- }
+    console.error("更新事件失败:", error);
+    return { success: false, message: '更新事件失败: ' + error.message };
+  }
 }
 
 async function deleteSubscription(id, env) {
   try {
     let subscriptions = await getAllSubscriptions(env);
- const filteredSubscriptions = subscriptions.filter(s => s.id !== id);
+    const filteredSubscriptions = subscriptions.filter(s => s.id !== id);
     
     if (filteredSubscriptions.length === subscriptions.length) {
-      return { success: false, message: '订阅不存在' };
- }
+      return { success: false, message: '事件不存在' };
+    }
     
     await env.SUBSCRIPTIONS_KV.put('subscriptions', JSON.stringify(filteredSubscriptions));
     return { success: true };
- } catch (error) {
-    console.error("删除订阅失败:", error);
-    return { success: false, message: '删除订阅失败: ' + error.message };
- }
+  } catch (error) {
+    console.error("删除事件失败:", error);
+    return { success: false, message: '删除事件失败: ' + error.message };
+  }
 }
 
 async function toggleSubscriptionStatus(id, isActive, env) {
   try {
     let subscriptions = await getAllSubscriptions(env);
- const index = subscriptions.findIndex(s => s.id === id);
+    const index = subscriptions.findIndex(s => s.id === id);
     
-    if (index === -1) return { success: false, message: '订阅不存在' };
- subscriptions[index].isActive = isActive;
+    if (index === -1) return { success: false, message: '事件不存在' };
+    subscriptions[index].isActive = isActive;
     subscriptions[index].updatedAt = new Date().toISOString();
     
     await env.SUBSCRIPTIONS_KV.put('subscriptions', JSON.stringify(subscriptions));
     return { success: true, subscription: subscriptions[index] };
- } catch (error) {
-    console.error("更新订阅状态失败:", error);
-    return { success: false, message: '更新订阅状态失败: ' + error.message };
- }
+  } catch (error) {
+    console.error("更新事件状态失败:", error);
+    return { success: false, message: '更新事件状态失败: ' + error.message };
+  }
 }
 
 async function sendNotifyXNotification(title, content, description, config) {
   try {
     if (!config.NOTIFYX_API_KEY) {
       console.log('[NotifyX] 通知未配置');
- return false;
+      return false;
     }
     const url = 'https://www.notifyx.cn/api/v1/send/' + config.NOTIFYX_API_KEY;
- const response = await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content, description: description || '' })
     });
- const result = await response.json();
+    const result = await response.json();
     if (result.status !== 'queued') console.error('[NotifyX] 发送结果失败:', result);
     return result.status === 'queued';
- } catch (error) {
+  } catch (error) {
     console.error('[NotifyX] 发送通知失败:', error);
     return false;
- }
+  }
 }
 
 async function sendWXPusherNotification(title, content, config) {
   try {
     if (!config.WXPUSHER_APP_TOKEN || (!config.WXPUSHER_UID && !config.WXPUSHER_TOPIC_ID)) {
       console.error('[WXPusher] 通知未配置 (缺少 AppToken, 或 UID/TopicID 都为空)');
- return false;
+      return false;
     }
     const url = 'https://wxpusher.zjiecode.com/api/send/message';
- const body = {
+    const body = {
       appToken: config.WXPUSHER_APP_TOKEN,
       content: content,
       summary: title,
       contentType: 3, // Markdown
     };
- if (config.WXPUSHER_UID) {
+    if (config.WXPUSHER_UID) {
       body.uids = config.WXPUSHER_UID.split(',').map(uid => uid.trim()).filter(uid => uid);;
- }
+    }
     if (config.WXPUSHER_TOPIC_ID) {
       body.topicIds = [config.WXPUSHER_TOPIC_ID];
- }
+    }
     
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
- const result = await response.json();
+    const result = await response.json();
     if (result.code !== 1000) console.error('[WXPusher] 发送结果失败:', result);
     return result.code === 1000;
- } catch (error) {
+  } catch (error) {
     console.error('[WXPusher] 发送通知失败:', error);
     return false;
- }
+  }
 }
 
 async function sendTelegramNotification(title, content, config) {
   try {
     if (!config.TG_BOT_TOKEN || !config.TG_CHAT_ID) {
       console.log('[Telegram] 通知未配置');
- return false;
+      return false;
     }
     const url = `https://api.telegram.org/bot${config.TG_BOT_TOKEN}/sendMessage`;
- const response = await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -2084,145 +2128,154 @@ async function sendTelegramNotification(title, content, config) {
         parse_mode: 'Markdown'
       })
     });
- const result = await response.json();
+    const result = await response.json();
     if (!result.ok) console.error('[Telegram] 发送结果失败:', result);
     return result.ok;
- } catch (error) {
+  } catch (error) {
     console.error('[Telegram] 发送通知失败:', error);
     return false;
- }
+  }
 }
 
-async function sendWeComNotification(title, content, config) {
-  try {
-    if (!config.WECOM_WEBHOOK_URL) {
-      console.log('[WeCom] 通知未配置');
- return false;
+async function sendResendEmailNotification(title, content, config) {
+    if (!config.RESEND_API_KEY || !config.SENDER_EMAIL || !config.RECIPIENT_EMAIL) {
+        console.error('[Email] Resend 配置不完整');
+        return false;
     }
-    const response = await fetch(config.WECOM_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        msgtype: "markdown",
-        markdown: {
-          content: content
+    const senderName = config.SENDER_NAME || '事件通知系统';
+    try {
+        const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${config.RESEND_API_KEY}`,
+            },
+            body: 
+ JSON.stringify({
+                from: `${senderName} <${config.SENDER_EMAIL}>`,
+                to: [config.RECIPIENT_EMAIL],
+                subject: title,
+                html: content.replace(/\n/g, '<br>'),
+            }),
+        });
+        const data = await response.json();
+        if (data.id) {
+            return true;
+        } else {
+            console.error('[Email] Resend API 错误:', data);
+            return false;
         }
-      })
-    });
- const result = await response.json();
-    if (result.errcode !== 0) console.error('[WeCom] 发送结果失败:', result);
-    return result.errcode === 0;
- } catch (error) {
-    console.error('[WeCom] 发送通知失败:', error);
-    return false;
- }
+    } catch (error) {
+        console.error('[Email] 发送邮件失败:', error);
+        return false;
+    }
 }
+
 
 async function sendXiZhiNotification(title, content, config) {
   try {
     if (!config.XIZHI_PUSH_URL) {
         console.log('[XiZhi] 推送URL未配置');
- return false;
+        return false;
     }
     const url = config.XIZHI_PUSH_URL;
- const response = await fetch(url, {
+    const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, content })
     });
- const result = await response.json();
+    const result = await response.json();
     // XiZhi success code is 200
     if (result.code !== 200) console.error('[XiZhi] 发送结果失败:', result);
- return result.code === 200;
+    return result.code === 200;
   } catch (error) {
     console.error('[XiZhi] 发送通知失败:', error);
     return false;
- }
+  }
 }
 
 async function sendToAllEnabledChannels(title, content, description, config) {
     const promises = [];
- if (!config.ENABLED_NOTIFIERS || config.ENABLED_NOTIFIERS.length === 0) {
+    if (!config.ENABLED_NOTIFIERS || config.ENABLED_NOTIFIERS.length === 0) {
         console.log("No notification channels enabled.");
         return;
- }
+    }
 
     if (config.ENABLED_NOTIFIERS.includes('wxpusher')) {
         const mdContent = '### ' + title + '\n\n' + content;
- promises.push(sendWXPusherNotification(title, mdContent, config));
+        promises.push(sendWXPusherNotification(title, mdContent, config));
     }
     if (config.ENABLED_NOTIFIERS.includes('xizhi')) {
         const xizhiContent = content.replace(/🚨|⚠️|📅/g, '').replace(/\*\*/g, '');
- promises.push(sendXiZhiNotification(title, xizhiContent, config));
+        promises.push(sendXiZhiNotification(title, xizhiContent, config));
     }
     if (config.ENABLED_NOTIFIERS.includes('notifyx')) {
         promises.push(sendNotifyXNotification(title, '## ' + title + '\n\n' + content, description, config));
- }
-    if (config.ENABLED_NOTIFIERS.includes('wecom')) {
-        const wecomContent = `> **${title}**\n\n${content.replace(/\*/g, '')}`;
- promises.push(sendWeComNotification(title, wecomContent, config));
+    }
+    if (config.ENABLED_NOTIFIERS.includes('email')) {
+        promises.push(sendResendEmailNotification(title, content, config));
     }
     if (config.ENABLED_NOTIFIERS.includes('telegram')) {
         const tgContent = `*${title}*\n\n${content.replace(/\*\*/g, '*')}`;
- promises.push(sendTelegramNotification(title, tgContent, config));
+        promises.push(sendTelegramNotification(title, tgContent, config));
     }
     
     await Promise.all(promises);
- }
+}
 
 async function testSingleSubscriptionNotification(id, env) {
   try {
     const subscription = await getSubscription(id, env);
- if (!subscription) return { success: false, message: '未找到该订阅' };
+    if (!subscription) return { success: false, message: '未找到该事件' };
     
     const config = await getConfig(env);
- const title = '手动测试通知: ' + subscription.name;
-    const description = '这是一个对订阅 "' + subscription.name + '" 的手动测试通知。';
- const expiryDateBJT = new Date(subscription.expiryDate).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
-    let content = `**订阅详情**:\n- **类型**: ${subscription.customType ||
+    const title = '手动测试通知: ' + subscription.name;
+    const description = '这是一个对事件 "' + subscription.name + '" 的手动测试通知。';
+    const expiryDateBJT = new Date(subscription.expiryDate).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+    let content = `**事件详情**:\n- **类型**: ${subscription.customType ||
  '其他'}\n- **到期日**: ${expiryDateBJT}\n- **备注**: ${subscription.notes || '无'}`;
     await sendToAllEnabledChannels(title, content, description, config);
     return { success: true, message: '测试通知已发送至所有已启用的渠道' };
- } catch (error) {
+  } catch (error) {
     console.error('[手动测试] 发送失败:', error);
     return { success: false, message: '发送时发生错误: ' + error.message };
- }
+  }
 }
 
 async function handleScheduledTasks(env) {
   const config = await getConfig(env);
   try {
     let subscriptions = await getAllSubscriptions(env);
- const now_utc = new Date();
+    const now_utc = new Date();
     
     let notificationsToSend = [];
     let hasUpdates = false;
- for (const sub of subscriptions) {
+    for (const sub of subscriptions) {
       if (sub.isActive === false) continue;
- const expiryDate = new Date(sub.expiryDate);
+      const expiryDate = new Date(sub.expiryDate);
       
       // 自动续订逻辑
       if (expiryDate < now_utc && sub.autoRenew !== false) {
         let newExpiryDate = new Date(expiryDate);
- while (newExpiryDate < now_utc) {
+        while (newExpiryDate < now_utc) {
           const periodValue = sub.periodValue || 1;
- if (sub.periodUnit === 'day') newExpiryDate.setDate(newExpiryDate.getDate() + periodValue);
+          if (sub.periodUnit === 'day') newExpiryDate.setDate(newExpiryDate.getDate() + periodValue);
           else if (sub.periodUnit === 'week') newExpiryDate.setDate(newExpiryDate.getDate() + periodValue * 7);
- else if (sub.periodUnit === 'month') newExpiryDate.setMonth(newExpiryDate.getMonth() + periodValue);
+          else if (sub.periodUnit === 'month') newExpiryDate.setMonth(newExpiryDate.getMonth() + periodValue);
           else if (sub.periodUnit === 'year') newExpiryDate.setFullYear(newExpiryDate.getFullYear() + periodValue);
           else break;
- }
+        }
         sub.expiryDate = newExpiryDate.toISOString();
         delete sub.expiredNotificationSent;
         delete sub.sentCustomNotifications;
         hasUpdates = true;
- }
+      }
       
       // 过期通知逻辑
       const hasExpired = expiryDate < now_utc;
- if (hasExpired && !sub.expiredNotificationSent) {
+      if (hasExpired && !sub.expiredNotificationSent) {
         notificationsToSend.push({ type: '已过期', sub: { ...sub }});
- sub.expiredNotificationSent = true;
+        sub.expiredNotificationSent = true;
         hasUpdates = true;
       }
 
@@ -2232,9 +2285,9 @@ async function handleScheduledTasks(env) {
  [];
         for (const notifyTimeISO of sub.customNotifyTimes) {
             const notifyTime = new Date(notifyTimeISO);
- if (now_utc >= notifyTime && !sub.sentCustomNotifications.includes(notifyTimeISO)) {
+            if (now_utc >= notifyTime && !sub.sentCustomNotifications.includes(notifyTimeISO)) {
                 notificationsToSend.push({ type: '自定义提醒', sub: { ...sub }, notifyTime: notifyTimeISO });
- sub.sentCustomNotifications.push(notifyTimeISO);
+                sub.sentCustomNotifications.push(notifyTimeISO);
                 hasUpdates = true;
             }
         }
@@ -2243,17 +2296,17 @@ async function handleScheduledTasks(env) {
 
     if (hasUpdates) {
       await env.SUBSCRIPTIONS_KV.put('subscriptions', JSON.stringify(subscriptions));
- }
+    }
 
     if (notificationsToSend.length > 0) {
       const uniqueNotifications = new Map();
- notificationsToSend.forEach(item => {
+      notificationsToSend.forEach(item => {
           const key = item.sub.id + '_' + item.type + '_' + (item.notifyTime || '');
           if (!uniqueNotifications.has(key)) {
               uniqueNotifications.set(key, item);
           }
       });
- const content = Array.from(uniqueNotifications.values())
+      const content = Array.from(uniqueNotifications.values())
         .sort((a, b) => new Date(a.sub.expiryDate) - new Date(b.sub.expiryDate))
         .map(item => {
             let statusText = '';
@@ -2261,44 +2314,42 @@ async function handleScheduledTasks(env) {
 
             if (item.type === '已过期') {
                 statusText = `🚨 **${item.sub.name}** 已过期`;
- 
              } else if (item.type === '自定义提醒') {
                 statusText = `📅 **${item.sub.name}** 自定义提醒`;
             }
             
             statusText += `\n   到期日: ${expiryDateFormatted}`;
-            if (item.sub.notes) statusText += '\n   备注: ' 
- + item.sub.notes;
+            if (item.sub.notes) statusText += '\n   备注: ' + item.sub.notes;
             return statusText;
         }).join('\n\n');
- if (content) {
-        const title = '订阅提醒';
+        if (content) {
+        const title = '事件提醒';
         await sendToAllEnabledChannels(title, content, title, config);
- }
+        }
     }
   } catch (error) {
-    console.error('[定时任务] 检查订阅失败:', error);
- await sendToAllEnabledChannels('订阅提醒任务失败', '检查过程中发生错误: ' + error.message, '任务失败', config);
+    console.error('[定时任务] 检查事件失败:', error);
+    await sendToAllEnabledChannels('事件提醒任务失败', '检查过程中发生错误: ' + error.message, '任务失败', config);
   }
 }
 
 
 function getCookieValue(cookieString, key) {
   if (!cookieString) return null;
- const match = cookieString.match(new RegExp('(^| )' + key + '=([^;]+)'));
+  const match = cookieString.match(new RegExp('(^| )' + key + '=([^;]+)'));
   return match ? match[2] : null;
- }
+}
 
 async function handleRequest(request, env, ctx) {
   return new Response(loginPage, {
     headers: { 'Content-Type': 'text/html; charset=utf-8' }
   });
- }
+}
 
 const CryptoJS = {
   HmacSHA256: function(message, key) {
     const keyData = new TextEncoder().encode(key);
- const messageData = new TextEncoder().encode(message);
+    const messageData = new TextEncoder().encode(message);
     
     return crypto.subtle.importKey(
       "raw", 
@@ -2312,19 +2363,19 @@ const CryptoJS = {
       const hashArray = Array.from(new Uint8Array(buffer));
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     });
- }
+  }
 };
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
- if (url.pathname.startsWith('/api')) {
+    if (url.pathname.startsWith('/api')) {
       return api.handleRequest(request, env, ctx);
- } else if (url.pathname.startsWith('/admin')) {
+    } else if (url.pathname.startsWith('/admin')) {
       return admin.handleRequest(request, env, ctx);
- } else {
+    } else {
       return handleRequest(request, env, ctx);
- }
+    }
   },
   
   async scheduled(event, env, ctx) {
