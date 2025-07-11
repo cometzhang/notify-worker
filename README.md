@@ -51,42 +51,12 @@
     [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cometzhang/notify-worker)  3.  在 Cloudflare 的部署配置页面，**必须**设置 KV 命名空间绑定。
     > ⚠️ **重要提示**：在 "KV Namespace Bindings" 设置中，变量名称 (`Variable Name`) **必须**填写为 `SUBSCRIPTIONS_KV`，并选择或创建一个 KV 仓库作为值 (`KV Namespace`)。
     >
-    > ![KV 命名空间绑定示例](https://raw.githubusercontent.com/cometzhang/notify-worker/main/image.png) ### 方式二：更新现有部署
+    mg width="1506" height="912" alt="Image" src="https://github.com/user-attachments/assets/0e0b4d0a-44aa-406f-a526-956a99a84557" />
+    > 
+### 方式二：更新现有部署
 对于已部署过的用户，直接在 Cloudflare 后台的 Worker 编辑器中，将本项目最新的 JS 代码内容完整复制并替换旧代码即可。
 
----
-
-## 📋 开始使用（三步走）
-
-1.  **首次登录与初始化**
-    - 访问您部署后的域名（例如 `xxx.your-name.workers.dev`）。
-    - 默认用户名：`admin`
-    - 默认密码：`password`
-
-2.  **基础配置**
-    - **修改密码**：登录后，请立即进入“系统配置”页面修改默认密码。
-    - **配置通知渠道**：在“系统配置”中至少选择并配置一个您希望使用的通知渠道。
-
-3.  **添加事件**
-    - 返回主页，开始添加您的订阅项目，设置到期时间和提醒规则。
-    - 系统将根据您的设置，在订阅到期前发送提醒。
-
-> 💡 **系统提示**: 系统默认根据cf的事件触发设置，对满足提醒条件的订阅发送通知。
-
----
-
-## 🔧 通知渠道配置详解
-
-### WXPusher
-- 前往 WXPusher 官网获取您的 `appToken` 和 `uid`。
-
-### 邮件通知
-- **推送 URL**: 参考https://resend.com/login，绑定域名，申请api key填入
-
-### Telegram Bot
-- **Bot Token**: 从 [@BotFather](https://t.me/BotFather) 获取。
-- **Chat ID**: 从 [@userinfobot](https://t.me/userinfobot) 获取您的个人 Chat ID。
-
+## 部署完之后务必设置kv空间和设定执行时间，具体可以看下面的手动部署指南
 
 
 ## 🚀 手动部署指南
@@ -131,6 +101,20 @@ Cloudflare账户
 <img width="1524" height="801" alt="Image" src="https://github.com/user-attachments/assets/07b226bc-f4f2-4329-a48e-1d1c691797cf" />
 
 6.配置完成可以点击测试通知,查看是否能够正常通知,然后就可以正常添加订阅使用了!
+
+
+## 🔧 通知渠道配置详解
+
+### WXPusher
+- 前往 WXPusher 官网获取您的 `appToken` 和 `uid`。
+
+### 邮件通知
+- **推送 URL**: 参考https://resend.com/login，绑定域名，申请api key填入
+
+### Telegram Bot
+- **Bot Token**: 从 [@BotFather](https://t.me/BotFather) 获取。
+- **Chat ID**: 从 [@userinfobot](https://t.me/userinfobot) 获取您的个人 Chat ID。
+
 
 
 
