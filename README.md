@@ -79,7 +79,35 @@
 
 
 
+🚀 手动部署指南
+前提条件
+Cloudflare账户
+Telegram Bot (用于发送通知)
+可以直接将代码丢给AI,帮助查漏补缺
+部署步骤
+1.登陆cloudflare,创建worker,粘贴本项目中的js代码,点击部署
 
+image
+
+2.创建KV键值 SUBSCRIPTIONS_KV
+
+image
+
+3.给worker绑定上键值对,以及设置定时执行时间!
+
+image
+
+4.打开worker提供的域名地址,输入默认账号密码: admin password (或者admin admin123),可以在代码中查看默认账号密码!
+
+image
+
+5.前往系统配置,修改账号密码,以及配置tg通知的信息
+
+image
+
+6.配置完成可以点击测试通知,查看是否能够正常通知,然后就可以正常添加订阅使用了!
+
+image
 
 
 ---
