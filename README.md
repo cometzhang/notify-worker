@@ -1,6 +1,6 @@
-# 事件管理与提醒系统
+# 事件通知系统
 
-> 一款基于 Cloudflare Workers 的轻量级订阅管理系统。帮助您轻松跟踪各类订阅服务的到期时间，并通过多种渠道（微信、Telegram、邮件等）发送及时提醒。
+> 一款基于 Cloudflare Workers 的轻量级事件通知系统。帮助您轻松跟踪各类订阅服务的到期时间，并通过多种渠道（微信、Telegram、邮件等）发送及时提醒。
 >
 > **本项目基于 [wangwangit/SubsTracker](https://github.com/wangwangit/SubsTracker) 项目进行二次开发，在原作者的优秀工作基础上，进行了功能增强和体验优化。在此向原作者表示诚挚的感谢！**
 
@@ -17,7 +17,10 @@
 - **NotifyX**：支持通过 NotifyX 发送通知。
 - **邮件**：支持域名邮箱发送。
 - - **Telegram**：通过您的个人 Telegram Bot 发送通知。
+  - 
+### 📱 手机页面优化
 
+### 📱 加入黑夜模式
 
 
 ### 🎨 优秀的用户体验
