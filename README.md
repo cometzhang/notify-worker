@@ -4,7 +4,7 @@
 >
 > **本项目基于 [wangwangit/SubsTracker](https://github.com/wangwangit/SubsTracker) 项目进行二次开发，在原作者的优秀工作基础上，进行了功能增强和体验优化。在此向原作者表示诚挚的感谢！**
 
-https://tu.icomet.cc/file/1752228235931_1.png
+![logo]([https://raw.githubusercontent.com/your-username/your-repository/main/images/logo.png](https://tu.icomet.cc/file/1752228235931_1.png))
 
 ## ✨ 功能特色
 
