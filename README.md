@@ -6,8 +6,6 @@
 
 <img width="1560" height="573" alt="Image" src="https://github.com/user-attachments/assets/123628da-5ec1-4682-b88e-4abcbfa7a833" />
 
-<img width="1524" height="801" alt="Image" src="https://github.com/user-attachments/assets/fe2dff3f-f0d8-4638-9bad-150c5b87b90c" />
-
 <img width="1533" height="669" alt="Image" src="https://github.com/user-attachments/assets/43b1caa5-5b0d-4a1f-9437-2e76b7625ee0" />
 
 <img width="1008" height="1062" alt="Image" src="https://github.com/user-attachments/assets/77d989c6-457b-4391-bb88-3e8bfb12d6d0" />
@@ -22,6 +20,7 @@
 - **事件管理**：轻松添加、编辑、删除各类事件服务。
 - **智能提醒**：支持自动计算下一个续订日期。
 - **状态管理**：自动识别并标记“已过期”状态，支持手动启用/停用订阅。
+- **手机浏览器优化**：方便在手机编辑管理。
 
 ### 📱 多渠道通知
 - **WXPusher**：WXPusher app推送。
@@ -29,11 +28,9 @@
 - **NotifyX**：支持通过 NotifyX 发送通知。
 - **邮件**：支持域名邮箱发送。
 - - **Telegram**：通过您的个人 Telegram Bot 发送通知。
-  - 
-### 📱 手机页面优化
 
 ### 📱 加入黑夜模式
-
+<img width="1524" height="801" alt="Image" src="https://github.com/user-attachments/assets/fe2dff3f-f0d8-4638-9bad-150c5b87b90c" />
 
 ### 🎨 优秀的用户体验
 - **响应式设计**：完美适配桌面和移动设备，随时随地轻松管理。
