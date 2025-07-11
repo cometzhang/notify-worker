@@ -6,7 +6,7 @@
 
 <img width="1560" height="573" alt="Image" src="https://github.com/user-attachments/assets/123628da-5ec1-4682-b88e-4abcbfa7a833" />
 
-<img width="1533" height="669" alt="Image" src="https://github.com/user-attachments/assets/43b1caa5-5b0d-4a1f-9437-2e76b7625ee0" />
+<img width="1524" height="801" alt="Image" src="https://github.com/user-attachments/assets/fe2dff3f-f0d8-4638-9bad-150c5b87b90c" />
 
 <img width="1008" height="1062" alt="Image" src="https://github.com/user-attachments/assets/77d989c6-457b-4391-bb88-3e8bfb12d6d0" />
 
@@ -30,7 +30,8 @@
 - - **Telegram**：通过您的个人 Telegram Bot 发送通知。
 
 ### 📱 加入黑夜模式
-<img width="1524" height="801" alt="Image" src="https://github.com/user-attachments/assets/fe2dff3f-f0d8-4638-9bad-150c5b87b90c" />
+
+<img width="1533" height="669" alt="Image" src="https://github.com/user-attachments/assets/43b1caa5-5b0d-4a1f-9437-2e76b7625ee0" />
 
 ### 🎨 优秀的用户体验
 - **响应式设计**：完美适配桌面和移动设备，随时随地轻松管理。
@@ -88,38 +89,50 @@
 
 
 
-🚀 手动部署指南
+## 🚀 手动部署指南
 前提条件
 Cloudflare账户
-Telegram Bot (用于发送通知)
 可以直接将代码丢给AI,帮助查漏补缺
 部署步骤
 1.登陆cloudflare,创建worker,粘贴本项目中的js代码,点击部署
 
-image
+<img width="957" height="774" alt="Image" src="https://github.com/user-attachments/assets/f4f77e11-8095-426f-a88f-67feecb112ac" />
+
+<img width="1212" height="1032" alt="Image" src="https://github.com/user-attachments/assets/d1f3e2b5-aac6-461f-9f75-9635e0f3809a" />
+
+<img width="1236" height="1068" alt="Image" src="https://github.com/user-attachments/assets/3fb23efd-eab8-425d-ad42-747199aa784d" />
+
+<img width="1509" height="1130" alt="Image" src="https://github.com/user-attachments/assets/8b48b1ce-bbf0-40d3-89da-f1330a64b653" />
 
 2.创建KV键值 SUBSCRIPTIONS_KV
 
-image
+<img width="1506" height="912" alt="Image" src="https://github.com/user-attachments/assets/8ae9005b-4bd2-4320-957d-45cd9bacfab1" />
 
-3.给worker绑定上键值对,以及设置定时执行时间!
+<img width="1167" height="636" alt="Image" src="https://github.com/user-attachments/assets/19bd05cd-5747-4318-ba8f-cf0f27d72e51" />
 
-image
+3、在worker项目里面绑定kv键值对
 
-4.打开worker提供的域名地址,输入默认账号密码: admin password (或者admin admin123),可以在代码中查看默认账号密码!
+<img width="1446" height="894" alt="Image" src="https://github.com/user-attachments/assets/6dd26d8e-cac5-4271-af4b-4cc3e3311210" />
 
-image
+<img width="1521" height="939" alt="Image" src="https://github.com/user-attachments/assets/187faae7-9a67-4fec-991a-feb37ccddeb3" />
 
-5.前往系统配置,修改账号密码,以及配置tg通知的信息
+<img width="1454" height="1053" alt="Image" src="https://github.com/user-attachments/assets/52934a07-d004-4fed-bfc4-c37ca7dbb28d" />
 
-image
+<img width="1304" height="758" alt="Image" src="https://github.com/user-attachments/assets/85e3f7f3-1b5e-49ff-9ce4-b21cd83ec1dc" />
+
+3.绑定自定义域名（才能在国内网络访问）最后设定设置定时执行时间!设定设置定时执行时间!设定设置定时执行时间! 才能正常推送。推荐设置* * * * *每分钟执行一次
+
+<img width="1527" height="1101" alt="Image" src="https://github.com/user-attachments/assets/ec6a3fa8-9e47-4476-9590-f5e75794f82f" />
+
+<img width="1236" height="774" alt="Image" src="https://github.com/user-attachments/assets/4fecc7b7-12d3-4d26-b82a-eeda4d7b386c" />
+
+4.打开worker提供的域名地址或者自定义域名,输入默认账号密码: admin password. 登录进入点右上角配置,修改账号密码,以及配置通知方式的信息
+
+<img width="1524" height="801" alt="Image" src="https://github.com/user-attachments/assets/07b226bc-f4f2-4329-a48e-1d1c691797cf" />
 
 6.配置完成可以点击测试通知,查看是否能够正常通知,然后就可以正常添加订阅使用了!
 
-image
 
-
----
 
 ## 🙏 致谢
 
