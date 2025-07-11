@@ -3,7 +3,8 @@
 > 一款基于 Cloudflare Workers 的轻量级事件通知系统。帮助您轻松跟踪各类订阅服务的到期时间，并通过多种渠道（微信、Telegram、邮件等）发送及时提醒。
 >
 > **本项目基于 [wangwangit/SubsTracker](https://github.com/wangwangit/SubsTracker) 项目进行二次开发，在原作者的优秀工作基础上，进行了功能增强和体验优化。在此向原作者表示诚挚的感谢！**
-> https://tu.icomet.cc/file/1752228235931_1.png
+
+https://tu.icomet.cc/file/1752228235931_1.png
 
 ## ✨ 功能特色
 
