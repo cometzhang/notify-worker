@@ -1092,15 +1092,15 @@ const configPage = `
       <form id="configForm" class="space-y-6 p-6">
         <div class="border-b pb-6">
           <h3 class="text-lg font-medium mb-2 text-primary">管理员账户</h3>
-          <p class="text-sm text-secondary mb-4">点击下方按钮修改管理员用户名和密码。</p>
+          <p class="text-sm text-secondary mb-4"></p>
           <button type="button" id="openAdminConfigBtn" class="btn-secondary text-white px-4 py-2 rounded-md text-sm font-medium flex items-center">
               <i class="fas fa-user-cog mr-2"></i>修改账户信息
           </button>
         </div>
         
         <div class="border-b pb-6">
-          <h3 class="text-lg font-medium mb-2 text-primary">通知设置</h3>
-          <p class="text-sm text-secondary mb-4">勾选启用通知渠道，点击齿轮(⚙️)进行配置。所有配置将通过底部的“保存所有配置”按钮统一保存。</p>
+          <h3 class="text-lg font-medium mb-2 text-primary">通知设置（可多选）</h3>
+          <p class="text-sm text-secondary mb-4"></p>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
               
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
