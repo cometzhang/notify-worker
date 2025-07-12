@@ -27,7 +27,7 @@
 - **息知**：集成  实现微信消息推送
 - **NotifyX**：支持通过 NotifyX 发送通知。
 - **邮件**：支持域名邮箱发送。
-- - **Telegram**：通过您的个人 Telegram Bot 发送通知。
+- **Telegram**：通过您的个人 Telegram Bot 发送通知。
 
 ### 📱 加入黑夜模式
 
@@ -72,6 +72,8 @@ Cloudflare账户
 
 <img width="1236" height="1068" alt="Image" src="https://github.com/user-attachments/assets/3fb23efd-eab8-425d-ad42-747199aa784d" />
 
+代码在index.js里面，直接复制替代原来的就行
+
 <img width="1509" height="1130" alt="Image" src="https://github.com/user-attachments/assets/8b48b1ce-bbf0-40d3-89da-f1330a64b653" />
 
 2.创建KV键值 SUBSCRIPTIONS_KV
@@ -114,6 +116,10 @@ Cloudflare账户
 ### Telegram Bot
 - **Bot Token**: 从 [@BotFather](https://t.me/BotFather) 获取。
 - **Chat ID**: 从 [@userinfobot](https://t.me/userinfobot) 获取您的个人 Chat ID。
+
+### bark  ios app
+- **复制填入即可
+- **<img width="720" height="1305" alt="Image" src="https://github.com/user-attachments/assets/ba7a684e-95f3-477a-987a-e15b2485d5dc" />
 
 
 
