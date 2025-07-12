@@ -261,7 +261,7 @@ const adminPage = `
             <i class="fas fa-cog sm:mr-1"></i><span class="hidden sm:inline">配置</span>
           </a>
           <button id="darkModeToggle" class="px-3 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-moon"></i>
+           <i class="fas fa-moon"></i>
           </button>
           <a href="/api/logout" class="px-3 py-2 rounded-md text-sm font-bold">
             <i class="fas fa-sign-out-alt sm:mr-1"></i><span class="hidden sm:inline">退出</span>
@@ -290,14 +290,14 @@ const adminPage = `
             <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-primary uppercase tracking-wider">名称</th>
             <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-primary uppercase tracking-wider">类型</th>
             <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-primary uppercase tracking-wider">
-                起止时间 <i class="fas fa-sort-up ml-1 text-indigo-500" title="按到期时间升序排列"></i>
+                 起止时间 <i class="fas fa-sort-up ml-1 text-indigo-500" title="按到期时间升序排列"></i>
             </th>
             <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-primary uppercase tracking-wider">状态</th>
             <th scope="col" class="px-6 py-3 text-right text-sm font-bold text-primary uppercase tracking-wider">操作</th>
           </tr>
         </thead>
         <tbody id="subscriptionsBody" class="divide-y divide-gray-200 dark:divide-gray-700">
-       </tbody>
+        </tbody>
       </table>
     </div>
   
@@ -312,7 +312,7 @@ const adminPage = `
       <div class="bg-gray-50 px-6 py-4 border-b rounded-t-lg">
         <div class="flex items-center justify-between">
           <h3 id="modalTitle" class="text-lg font-medium text-primary">添加新事件</h3>
-          <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+           <button id="closeModal" class="text-gray-400 hover:text-gray-600">
              <i class="fas fa-times text-xl"></i>
           </button>
         </div>
@@ -322,7 +322,7 @@ const adminPage = `
         <input type="hidden" id="subscriptionId">
         
          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
+           <div>
             <label for="name" class="block text-sm font-medium mb-1">事件名称 *</label>
              <input type="text" id="name" required
               class="w-full px-3 py-2 border rounded-md focus:outline-none">
@@ -335,7 +335,7 @@ const adminPage = `
              <datalist id="customTypeList">
                 <option value="订阅"></option>
                 <option value="航旅"></option>
-                <option value="日程"></option>
+                 <option value="日程"></option>
                 <option value="云服务器"></option>
              </datalist>
             <div class="error-message text-red-500"></div>
@@ -344,14 +344,14 @@ const adminPage = `
 
          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
            <div>
-             <label for="startDate" class="block text-sm font-medium mb-1">开始时间</label>
+            <label for="startDate" class="block text-sm font-medium mb-1">开始时间</label>
             <input type="date" id="startDate"
               class="w-full px-3 py-2 border rounded-md focus:outline-none">
             <div class="error-message text-red-500"></div>
           </div>
            <div>
              <label for="expiryDate" class="block text-sm font-medium mb-1">到期时间 *</label>
-            <input type="date" id="expiryDate" required
+            <input type="datetime-local" id="expiryDate" required
            class="w-full px-3 py-2 border rounded-md focus:outline-none">
             <div class="error-message text-red-500"></div>
           </div>
@@ -364,7 +364,7 @@ const adminPage = `
               <input type="number" id="periodValue" list="periodValueList" min="1" value="1" required
                 class="w-full px-3 py-2 border rounded-md focus:outline-none">
                <datalist id="periodValueList">
-                  <option value="1"></option><option value="2"></option><option value="3"></option><option value="4"></option><option value="5"></option><option value="6"></option><option value="7"></option><option value="8"></option><option value="9"></option><option value="10"></option><option value="11"></option><option value="12"></option><option value="13"></option><option value="14"></option><option value="15"></option><option value="16"></option><option value="17"></option><option value="18"></option><option value="19"></option><option value="20"></option>
+                 <option value="1"></option><option value="2"></option><option value="3"></option><option value="4"></option><option value="5"></option><option value="6"></option><option value="7"></option><option value="8"></option><option value="9"></option><option value="10"></option><option value="11"></option><option value="12"></option><option value="13"></option><option value="14"></option><option value="15"></option><option value="16"></option><option value="17"></option><option value="18"></option><option value="19"></option><option value="20"></option>
               </datalist>
               <div class="error-message text-red-500"></div>
             </div>
@@ -375,26 +375,26 @@ const adminPage = `
                  <option value="day">天</option>
                 <option value="week">周</option>
                  <option value="month" selected>月</option>
-                <option value="year">年</option>
+                 <option value="year">年</option>
               </select>
                <div class="error-message text-red-500"></div>
             </div>
           </div>
            <div class="flex items-center space-x-4">
              <label class="inline-flex items-center pt-6">
-                 <input type="checkbox" id="autoRenew" checked 
+                  <input type="checkbox" id="autoRenew" checked 
                    class="form-checkbox h-4 w-4 text-indigo-600 rounded">
                   <span class="ml-2 text-sm">自动续订</span>
               </label>
            </div>
          </div>
-        
+         
         <div class="border-t pt-6">
             <div class="flex items-center space-x-4">
                 <button type="button" id="addNotifyTimeBtn" class="bg-transparent text-primary hover:bg-gray-100 dark:hover:bg-black text-sm px-3 py-2 rounded-md flex items-center border border-gray-400">
                     增加通知时间
                   </button>
-            </div>
+             </div>
             <p class="text-xs text-secondary mt-1">点击上方按钮可添加最多3个自定义通知时间点。</p>
             <div id="notifyTimesContainer" class="space-y-2 mt-2"></div>
         </div>
@@ -402,21 +402,21 @@ const adminPage = `
         <div>
           <label for="notes" class="block text-sm font-medium mb-1">备注</label>
            <textarea id="notes" rows="3" placeholder="可添加相关备注信息..."
-            class="w-full px-3 py-2 border rounded-md focus:outline-none"></textarea>
+             class="w-full px-3 py-2 border rounded-md focus:outline-none"></textarea>
           <div class="error-message text-red-500"></div>
         </div>
         
         <div class="flex justify-end space-x-3 pt-4 border-t">
            <button type="button" id="testCurrentSubscriptionBtn" class="hidden text-sm text-primary border border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 rounded-md flex items-center">
                 <i class="fas fa-paper-plane mr-2"></i>测试通知
-            </button>
+           </button>
            <button type="button" id="cancelBtn" 
             class="px-4 py-2 border rounded-md text-sm font-medium hover:bg-gray-50">
             取消
           </button>
           <button type="submit" 
             class="btn-info text-white px-4 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-save mr-2"></i>保存
+             <i class="fas fa-save mr-2"></i>保存
            </button>
         </div>
       </form>
@@ -466,7 +466,7 @@ const adminPage = `
 
     function clearFieldErrors() {
       document.querySelectorAll('.error-message').forEach(el => {
-        el.classList.remove('show');
+         el.classList.remove('show');
         el.textContent = '';
       });
       document.querySelectorAll('.border-red-500').forEach(el => {
@@ -481,6 +481,18 @@ const adminPage = `
             const timezoneOffset = d.getTimezoneOffset() * 60000;
             const localDate = new Date(d.getTime() - timezoneOffset);
             return localDate.toISOString().slice(0, 10);
+        } catch(e) {
+            return '';
+        }
+    }
+
+    function formatToLocalDateTime(isoString) {
+        if (!isoString) return '';
+        try {
+            const d = new Date(isoString);
+            const timezoneOffset = d.getTimezoneOffset() * 60000;
+            const localDate = new Date(d.getTime() - timezoneOffset);
+            return localDate.toISOString().slice(0, 16); // Format to YYYY-MM-DDTHH:MM
         } catch(e) {
             return '';
         }
@@ -537,7 +549,7 @@ const adminPage = `
           if (!subscription.isActive) {
             statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-gray-500"><i class="fas fa-pause-circle mr-1"></i>已停用</span>';
           } else if (expiryDate < now) {
-         statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-red-500"><i class="fas fa-exclamation-circle mr-1"></i>已过期</span>';
+         statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-red-500"><i class="fas fa-exclamation-circle mr-1"></i>已到期</span>';
           } else {
             statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-green-500"><i class="fas fa-check-circle mr-1"></i>正常</span>';
           }
@@ -553,7 +565,7 @@ const adminPage = `
             
           let remainingDiv = '';
           if (daysDiff < 0) {
-            remainingDiv = '<div class="text-xs font-bold text-red-500">剩余: 已过期</div>';
+            remainingDiv = '<div class="text-xs font-bold text-red-500">剩余: 已到期</div>';
           } else {
             remainingDiv = '<div class="text-xs font-bold text-primary">剩余: ' + daysDiff + '天</div>';
           }
@@ -569,26 +581,29 @@ const adminPage = `
                 \${remainingDiv}
               </div>
           \`;
-
           const safeName = escapeHtml(subscription.name);
           const notesHtml = subscription.notes ?
             '<div class="text-xs text-secondary" style="white-space: pre-wrap; word-break: break-all;">' + escapeHtml(subscription.notes) + '</div>' : '';
-
           const expiryDateFormatted = formatToLocalDate(subscription.expiryDate);
           const startDateFormatted = subscription.startDate ? formatToLocalDate(subscription.startDate) : '';
           const expiryDateLine = '<div class="text-sm font-bold text-primary">到期: ' + expiryDateFormatted + '</div>';
           const startDateLine = startDateFormatted ?
             '<div class="text-xs font-bold text-primary mt-1">开始: ' + startDateFormatted + '</div>' : '';
+
+          let statusButtonHtml;
+          if (subscription.isActive) {
+              statusButtonHtml = '<button class="toggle-status bg-transparent hover:bg-yellow-50 dark:hover:bg-gray-700 text-yellow-600 dark:text-yellow-400 px-2 py-1 rounded-md text-xs font-medium" data-id="' + subscription.id + '" data-action="deactivate">停用</button>';
+          } else {
+              statusButtonHtml = '<button class="toggle-status bg-transparent hover:bg-green-50 dark:hover:bg-gray-700 text-green-600 dark:text-green-400 px-2 py-1 rounded-md text-xs font-medium" data-id="' + subscription.id + '" data-action="activate">启用</button>';
+          }
           const actionsHtml = \`
             <div class="flex items-center justify-end space-x-2">
                 <button class="edit bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 text-primary px-2 py-1 rounded-md text-xs font-medium" data-id="\${subscription.id}">编辑</button>
-                \${subscription.isActive
-                    ? \`<button class="toggle-status bg-transparent hover:bg-yellow-50 dark:hover:bg-gray-700 text-yellow-600 dark:text-yellow-400 px-2 py-1 rounded-md text-xs font-medium" data-id="\${subscription.id}" data-action="deactivate">停用</button>\`
-                    : \`<button class="toggle-status bg-transparent hover:bg-green-50 dark:hover:bg-gray-700 text-green-600 dark:text-green-400 px-2 py-1 rounded-md text-xs font-medium" data-id="\${subscription.id}" data-action="activate">启用</button>\`
-                }
+                \${statusButtonHtml}
                 <button class="delete bg-transparent hover:bg-red-50 dark:hover:bg-gray-700 text-red-600 dark:text-red-400 px-2 py-1 rounded-md text-xs font-medium" data-id="\${subscription.id}">删除</button>
             </div>
           \`;
+          
           row.innerHTML = 
             '<td class="px-6 py-4">' + 
               '<div class="text-sm font-bold text-primary">' + safeName + '</div>' +
@@ -601,7 +616,7 @@ const adminPage = `
             '</td>' +
              '<td class="px-6 py-4 whitespace-nowrap">' + 
               expiryDateLine +
-              startDateLine +
+               startDateLine +
               bottomRowHtml +
             '</td>' +
              '<td class="px-6 py-4 whitespace-nowrap">' + statusHtml + '</td>' +
@@ -694,10 +709,11 @@ const adminPage = `
       const now = new Date();
       document.getElementById('startDate').value = formatToLocalDate(now.toISOString());
       document.getElementById('autoRenew').checked = true;
-      
+       
       calculateExpiryDate();
       setupModalEventListeners();
     });
+
     function addNotifyTime(timeValue = '') {
         const container = document.getElementById('notifyTimesContainer');
         if (container.children.length >= MAX_NOTIFY_TIMES) {
@@ -711,7 +727,7 @@ const adminPage = `
             if (expiryDateValue) {
                 const expiry = new Date(expiryDateValue);
                 expiry.setHours(expiry.getHours() + 1);
-                defaultValue = formatToLocalDate(expiry.toISOString());
+                defaultValue = formatToLocalDateTime(expiry.toISOString());
             }
         }
 
@@ -767,7 +783,7 @@ const adminPage = `
         expiry.setFullYear(start.getFullYear() + periodValue);
       }
       
-      document.getElementById('expiryDate').value = formatToLocalDate(expiry.toISOString());
+      document.getElementById('expiryDate').value = formatToLocalDateTime(expiry.toISOString());
     }
     
     document.getElementById('closeModal').addEventListener('click', () => {
@@ -790,7 +806,7 @@ const adminPage = `
           }
       });
       
-      
+           
        const subscription = {
         name: document.getElementById('name').value.trim(),
         customType: document.getElementById('customType').value.trim(),
@@ -800,6 +816,7 @@ const adminPage = `
           new Date(document.getElementById('startDate').value).toISOString() : null,
         expiryDate: document.getElementById('expiryDate').value ?
           new Date(document.getElementById('expiryDate').value).toISOString() : null,
+ 
         periodValue: parseInt(document.getElementById('periodValue').value),
         periodUnit: document.getElementById('periodUnit').value,
         customNotifyTimes: customNotifyTimes,
@@ -809,8 +826,7 @@ const adminPage = `
       submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + (id ? '更新中...' : '保存中...');
       submitButton.disabled = true;
       try {
-        const url = id ?
-          '/api/subscriptions/' + id : '/api/subscriptions';
+        const url = id ? '/api/subscriptions/' + id : '/api/subscriptions';
         const method = id ? 'PUT' : 'POST';
         const response = await fetch(url, {
           method: method,
@@ -850,7 +866,7 @@ const adminPage = `
           document.getElementById('autoRenew').checked = subscription.autoRenew !== false;
           
           document.getElementById('startDate').value = formatToLocalDate(subscription.startDate);
-          document.getElementById('expiryDate').value = formatToLocalDate(subscription.expiryDate);
+          document.getElementById('expiryDate').value = formatToLocalDateTime(subscription.expiryDate);
 
           document.getElementById('periodValue').value = subscription.periodValue || 1;
           document.getElementById('periodUnit').value = subscription.periodUnit || 'month';
@@ -859,7 +875,7 @@ const adminPage = `
           notifyTimesContainer.innerHTML = '';
           if (subscription.customNotifyTimes && Array.isArray(subscription.customNotifyTimes)) {
               subscription.customNotifyTimes.forEach(time => {
-                  addNotifyTime(formatToLocalDate(time));
+                  addNotifyTime(formatToLocalDateTime(time));
               });
           }
 
@@ -925,7 +941,7 @@ const adminPage = `
         } else {
             localStorage.setItem('theme', 'light');
             toggleIcon.classList.remove('fa-sun');
-            toggleIcon.classList.add('fa-moon');
+             toggleIcon.classList.add('fa-moon');
         }
     });
     function updateBeijingTime() {
@@ -940,7 +956,7 @@ const adminPage = `
             hour: '2-digit',
             minute: '2-digit',
             hour12: false
-        };
+               };
         const formatter = new Intl.DateTimeFormat('zh-CN', beijingTimeOptions);
         const parts = formatter.formatToParts(now);
         const
@@ -1077,7 +1093,7 @@ const configPage = `
             <i class="fas fa-cog sm:mr-1"></i><span class="hidden sm:inline">配置</span>
           </a>
           <button id="darkModeToggle" class="px-3 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-moon"></i>
+             <i class="fas fa-moon"></i>
            </button>
           <a href="/api/logout" class="px-3 py-2 rounded-md text-sm font-medium">
             <i class="fas fa-sign-out-alt sm:mr-1"></i><span class="hidden sm:inline">退出</span>
@@ -1104,11 +1120,11 @@ const configPage = `
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
               
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
-                <span class="font-medium text-sm text-primary">WXPusher</span>
+                 <span class="font-medium text-sm text-primary">WXPusher</span>
                 <div class="flex items-center space-x-3">
                     <input type="checkbox" id="enableWXPusher" name="enabled_notifiers" value="wxpusher" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
                     <button type="button" data-modal-target="wxpusherConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
-                </div>
+                 </div>
             </div>
 
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
@@ -1120,33 +1136,33 @@ const configPage = `
             </div>
             
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
-             <span class="font-medium text-sm text-primary">NotifyX</span>
+              <span class="font-medium text-sm text-primary">NotifyX</span>
                 <div class="flex items-center space-x-3">
                     <input type="checkbox" id="enableNotifyx" name="enabled_notifiers" value="notifyx" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
                     <button type="button" data-modal-target="notifyxConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
                 </div>
-            </div>
+                 </div>
 
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
                 <span class="font-medium text-sm text-primary">邮件</span>
                 <div class="flex items-center space-x-3">
                     <input type="checkbox" id="enableEmail" name="enabled_notifiers" value="email" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <button type="button" data-modal-target="emailConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
+                     <button type="button" data-modal-target="emailConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
                 </div>
             </div>
 
             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
                <span class="font-medium text-sm text-primary">Telegram</span>
-                <div class="flex items-center space-x-3">
+                 <div class="flex items-center space-x-3">
                     <input type="checkbox" id="enableTelegram" name="enabled_notifiers" value="telegram" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
                     <button type="button" data-modal-target="telegramConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
                 </div>
             </div>
-            <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
+             <div class="flex flex-col items-center justify-center p-3 border rounded-lg space-y-2">
                 <span class="font-medium text-sm text-primary">Bark</span>
                 <div class="flex items-center space-x-3">
                     <input type="checkbox" id="enableBark" name="enabled_notifiers" value="bark" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <button type="button" data-modal-target="barkConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
+                     <button type="button" data-modal-target="barkConfigModal" class="open-config-modal-btn text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-cog"></i></button>
                 </div>
             </div>
           </div>
@@ -1154,7 +1170,7 @@ const configPage = `
         
         <div class="flex justify-end pt-2">
           <button type="submit" class="btn-primary text-white px-6 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-save mr-2"></i>保存所有配置
+             <i class="fas fa-save mr-2"></i>保存所有配置
           </button>
         </div>
       </form>
@@ -1165,13 +1181,13 @@ const configPage = `
     <div id="adminConfigModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 modal-container hidden flex items-center justify-center">
         <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
             <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
-                <h3 class="text-lg font-medium text-primary">管理员账户设置</h3>
+                 <h3 class="text-lg font-medium text-primary">管理员账户设置</h3>
                 <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
             </div>
             <div class="p-6 space-y-4">
                 <div>
                     <label for="adminUsername" class="block text-sm font-medium text-primary">用户名</label>
-                    <input type="text" id="adminUsername" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+                     <input type="text" id="adminUsername" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
                 </div>
                 <div>
                     <label for="adminPassword" class="block text-sm font-medium text-primary">新密码</label>
@@ -1196,7 +1212,7 @@ const configPage = `
             <div>
               <label for="wxpusherAppToken" class="block text-sm font-medium text-primary">AppToken</label>
               <input type="text" id="wxpusherAppToken" placeholder="在 WXPusher 后台获取" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
-            </div>
+             </div>
             <div>
               <label for="wxpusherTopicId" class="block text-sm font-medium text-primary">Topic ID</label>
               <input type="text" id="wxpusherTopicId" placeholder="推送给主题, 可选" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
@@ -1209,7 +1225,7 @@ const configPage = `
           <p class="text-sm text-secondary">UID 和 Topic ID 至少需要填写一个。从 <a href="http://wxpusher.zjiecode.com/" target="_blank" class="text-indigo-600 hover:text-indigo-800">WXPusher官网</a> 获取。</p>
         </div>
          <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
-          <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
+           <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
           <button type="button" data-test-button="wxpusher" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
         </div>
       </div>
@@ -1223,11 +1239,11 @@ const configPage = `
             </div>
             <div class="p-6 space-y-4">
                <div>
-                    <label for="xizhiPushUrl" class="block text-sm font-medium text-primary">息知推送URL (接口)</label>
+                   <label for="xizhiPushUrl" class="block text-sm font-medium text-primary">息知推送URL (接口)</label>
                     <input type="text" id="xizhiPushUrl" placeholder="例如: https://xizhi.qqoq.net/xxxxxxxx.send" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
                     <p class="mt-1 text-sm text-secondary">从 <a href="https://xz.qqoq.net/" target="_blank" class="text-indigo-600 hover:text-indigo-800">息知官网</a> 获取完整的推送URL</p>
                 </div>
-             </div>
+              </div>
             <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
                 <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
                 <button type="button" data-test-button="xizhi" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
@@ -1241,7 +1257,7 @@ const configPage = `
                 <h3 class="text-lg font-medium text-primary">NotifyX 配置</h3>
                 <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
              </div>
-            <div class="p-6 space-y-4">
+             <div class="p-6 space-y-4">
                 <div>
                     <label for="notifyxApiKey" class="block text-sm font-medium text-primary">API Key</label>
                     <input type="text" id="notifyxApiKey" placeholder="从 NotifyX 平台获取的 API Key" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
@@ -1259,7 +1275,7 @@ const configPage = `
       <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
         <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
           <h3 class="text-lg font-medium text-primary">邮件 (Resend) 配置</h3>
-          <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+           <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
         </div>
         <div class="p-6 space-y-4">
           <div>
@@ -1273,13 +1289,14 @@ const configPage = `
           </div>
            <div>
              <label for="senderName" class="block text-sm font-medium text-primary">发件人名称</label>
-            <input type="text" id="senderName" placeholder="事件通知系统" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+ 
+             <input type="text" id="senderName" placeholder="事件通知系统" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
           </div>
           <div>
             <label for="recipientEmail" class="block text-sm font-medium text-primary">收件人邮箱</label>
             <input type="email" id="recipientEmail" placeholder="your-email@example.com" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
           </div>
-        </div>
+         </div>
         <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
           <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
           <button type="button" data-test-button="email" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
@@ -1289,25 +1306,30 @@ const configPage = `
 
      <div id="telegramConfigModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 modal-container hidden flex items-center justify-center">
         <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
-            <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
+ 
+             <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
                 <h3 class="text-lg font-medium text-primary">Telegram Bot 配置</h3>
                 <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
             </div>
             <div class="p-6 space-y-4">
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+               
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="tgBotToken" class="block text-sm font-medium text-primary">Bot Token</label>
                         <input type="text" id="tgBotToken" placeholder="从 BotFather 获取" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
-                    </div>
+       
+                     </div>
                     <div>
                         <label for="tgChatId" class="block text-sm font-medium text-primary">Chat ID</label>
                         <input type="text" id="tgChatId" placeholder="用户、频道或群组的ID" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
-                    </div>
+  
+                      </div>
                 </div>
             </div>
             <div class="flex justify-end space-x-3 px-6 py-4 border-t bg-gray-50 rounded-b-lg">
                 <button type="button" data-save-button class="btn-primary text-white px-4 py-2 rounded-md text-sm">保存</button>
-                <button type="button" data-test-button="telegram" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
+          
+                 <button type="button" data-test-button="telegram" class="btn-secondary text-white px-4 py-2 rounded-md text-sm">测试</button>
             </div>
         </div>
     </div>
@@ -1315,13 +1337,15 @@ const configPage = `
     <div id="barkConfigModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 modal-container hidden flex items-center justify-center">
         <div class="modal-content rounded-lg shadow-xl max-w-lg w-full mx-4">
             <div class="flex items-center justify-between px-6 py-4 border-b rounded-t-lg">
-                <h3 class="text-lg font-medium text-primary">Bark 配置</h3>
+           
+                   <h3 class="text-lg font-medium text-primary">Bark 配置</h3>
                 <button data-close-button class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
             </div>
             <div class="p-6 space-y-4">
                 <div>
                     <label for="barkPushUrl" class="block text-sm font-medium text-primary">Bark 推送URL</label>
-                    <input type="text" id="barkPushUrl" placeholder="例如: https://api.day.app/your_key" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
+   
+                                   <input type="text" id="barkPushUrl" placeholder="例如: https://api.day.app/your_key" class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 focus:outline-none">
                     <p class="mt-1 text-sm text-secondary">从 Bark App 中获取完整的推送URL。</p>
                 </div>
             </div>
@@ -1375,7 +1399,6 @@ const configPage = `
         document.getElementById('tgBotToken').value = config.TG_BOT_TOKEN || '';
         document.getElementById('tgChatId').value = config.TG_CHAT_ID || '';
         document.getElementById('barkPushUrl').value = config.BARK_PUSH_URL || '';
-
         if (config.ENABLED_NOTIFIERS && Array.isArray(config.ENABLED_NOTIFIERS)) {
             config.ENABLED_NOTIFIERS.forEach(notifier => {
                 let checkbox;
@@ -1386,7 +1409,7 @@ const configPage = `
                 else if (notifier === 'xizhi') checkbox = document.getElementById('enableXiZhi');
                 else if (notifier === 'bark') checkbox = document.getElementById('enableBark');
                 
-                if (checkbox) {
+                 if (checkbox) {
                     checkbox.checked = true;
                 }
             });
@@ -1460,7 +1483,7 @@ const configPage = `
 
       if (success) {
         setTimeout(() => {
-         window.location.href = '/admin';
+               window.location.href = '/admin';
         }, 1000); 
       } else {
         submitButton.innerHTML = originalContent;
@@ -1532,7 +1555,8 @@ const configPage = `
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             button.disabled = true;
             const success = await saveConfig();
-            if (success) {
+         
+           if (success) {
                 setTimeout(() => {
                     if(modal) modal.classList.add('hidden');
                 }, 1000);
@@ -1543,7 +1567,7 @@ const configPage = `
     });
 
  const darkModeToggle = document.getElementById('darkModeToggle');
-    const toggleIcon = darkModeToggle.querySelector('i');
+ const toggleIcon = darkModeToggle.querySelector('i');
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
         toggleIcon.classList.remove('fa-moon');
@@ -1563,7 +1587,8 @@ const configPage = `
         } else {
             localStorage.setItem('theme', 'light');
             toggleIcon.classList.remove('fa-sun');
-            toggleIcon.classList.add('fa-moon');
+   
+             toggleIcon.classList.add('fa-moon');
         }
     });
     window.addEventListener('load', loadConfig);
@@ -1623,7 +1648,7 @@ const api = {
               'Set-Cookie': 'token=' + token + '; HttpOnly; Path=/; SameSite=Strict; Max-Age=86400'
             }
           }
-       );
+        );
       } else {
         return new Response(
           JSON.stringify({ success: false, message: '用户名或密码错误' }),
@@ -1949,7 +1974,8 @@ async function updateSubscription(id, subscription, env) {
     };
     if (new Date(updatedSub.expiryDate) > new Date()) {
         delete updatedSub.expiredNotificationSent;
-        delete updatedSub.sentCustomNotifications; // 重置自定义通知发送记录
+        delete updatedSub.sentCustomNotifications;
+        // 重置自定义通知发送记录
     }
     
     subscriptions[index] = updatedSub;
@@ -2031,7 +2057,6 @@ async function sendWXPusherNotification(title, content, config) {
       contentType: 3, // Markdown
     };
     if (config.WXPUSHER_UID) {
-      // 修正：移除多余的分号
       body.uids = config.WXPUSHER_UID.split(',').map(uid => uid.trim()).filter(uid => uid);
     }
     if (config.WXPUSHER_TOPIC_ID) {
@@ -2090,13 +2115,12 @@ async function sendResendEmailNotification(title, content, config) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${config.RESEND_API_KEY}`,
             },
-            // 修正：移除 body 和 JSON.stringify 之间的非法换行
             body: JSON.stringify({
                 from: `${senderName} <${config.SENDER_EMAIL}>`,
                 to: [config.RECIPIENT_EMAIL],
                 subject: title,
                 html: content.replace(/\n/g, '<br>'),
-            }),
+            })
         });
         const data = await response.json();
         if (data.id) {
@@ -2143,7 +2167,6 @@ async function sendBarkNotification(title, content, config) {
         const response = await fetch(url, {
             method: 'GET',
         });
-
         if (response.ok) {
             console.log('[Bark] 通知发送成功');
             return true;
@@ -2241,7 +2264,7 @@ async function handleScheduledTasks(env) {
       // 过期通知逻辑
       const hasExpired = expiryDate < now_utc;
       if (hasExpired && !sub.expiredNotificationSent) {
-        notificationsToSend.push({ type: '已过期', sub: { ...sub }});
+        notificationsToSend.push({ type: '已到期', sub: { ...sub }});
         sub.expiredNotificationSent = true;
         hasUpdates = true;
       }
@@ -2278,14 +2301,15 @@ async function handleScheduledTasks(env) {
             let statusText = '';
             const expiryDateFormatted = new Date(item.sub.expiryDate).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
 
-            if (item.type === '已过期') {
-                statusText = `🚨 **${item.sub.name}** 已过期`;
+            if (item.type === '已到期') {
+                statusText = `🚨 **${item.sub.name}** 已到期`;
             } else if (item.type === '自定义提醒') {
                 statusText = `📅 **${item.sub.name}** 自定义提醒`;
             }
             
             statusText += `\n   到期日: ${expiryDateFormatted}`;
             if (item.sub.notes) statusText += `\n   备注: ${item.sub.notes}`;
+ 
             return statusText;
         }).join('\n\n');
       if (content) {
