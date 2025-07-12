@@ -28,6 +28,7 @@
 - **NotifyX**：支持通过 NotifyX 发送通知。
 - **邮件**：支持域名邮箱发送。
 - **Telegram**：通过您的个人 Telegram Bot 发送通知。
+- **bark**：ios多个推送选择。
 
 ### 📱 加入黑夜模式
 
