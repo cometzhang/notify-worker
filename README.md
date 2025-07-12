@@ -72,6 +72,8 @@ Cloudflare账户
 
 <img width="1236" height="1068" alt="Image" src="https://github.com/user-attachments/assets/3fb23efd-eab8-425d-ad42-747199aa784d" />
 
+代码在index.js里面，直接复制替代原来的就行
+
 <img width="1509" height="1130" alt="Image" src="https://github.com/user-attachments/assets/8b48b1ce-bbf0-40d3-89da-f1330a64b653" />
 
 2.创建KV键值 SUBSCRIPTIONS_KV
