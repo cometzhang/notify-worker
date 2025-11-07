@@ -1,4 +1,4 @@
-// 事件通知系统 - 基于CloudFlare Workers (V3.0)
+// 事件通知系统 - 基于CloudFlare Workers (V3.5)
 
 // 定义HTML模板
 const loginPage = `
